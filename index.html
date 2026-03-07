@@ -1,92 +1,242 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>王承皓 | Product Manager</title>
-
-  <!-- SEO Meta -->
-  <meta name="description" content="王承皓，一位來自台灣的產品經理，專注於技術與創意結合。" />
+  <meta
+    name="description"
+    content="王承皓，來自台灣的產品經理，專注於企劃、專案管理與問題拆解，保持叛逆，特立獨行。"
+  />
   <link rel="canonical" href="https://aboao.github.io/" />
 
-  <!-- Open Graph -->
   <meta property="og:title" content="王承皓 | Product Manager" />
-  <meta property="og:description" content="來自台灣的經理人，致力於創新與解謎。" />
-  <meta property="og:image" content="images/og-image.jpg" />
+  <meta
+    property="og:description"
+    content="來自台灣的經理人，專注於增強自己在各種領域的技能。"
+  />
+  <meta property="og:image" content="https://aboao.github.io/images/%E7%8E%8B%E6%89%BF%E7%9A%93.jpg" />
   <meta property="og:url" content="https://aboao.github.io/" />
   <meta property="og:type" content="website" />
 
-  <!-- Icon -->
   <link rel="icon" href="images/A.ico" type="image/x-icon" />
-
-  <!-- CSS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Outfit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
   <link rel="stylesheet" href="assets/css/main.css" />
-
-  <!-- Google Fonts / Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet" />
   <script src="https://kit.fontawesome.com/b2a6aba1cf.js" crossorigin="anonymous"></script>
 </head>
-
 <body>
-  <!-- Hero 區（首頁） -->
-  <section id="hero" class="section full-screen">
-    <div class="hero-content">
-      <h1>王承皓</h1>
-      <p>Product Manager / Puzzle Solver / Rebellious Mindset</p>
-      <a href="#about" class="scroll-down">了解更多 ↓</a>
-    </div>
-  </section>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#hero" aria-label="回到首頁">
+        <img src="images/LOGO.svg" alt="ABAO Logo" />
+      </a>
 
-  <!-- 關於我區塊 -->
-  <section id="about" class="section">
-    <div class="container">
-      <h2>關於我</h2>
-      <p>AKA 阿寶，1994 年出生的產品經理。擅長企劃與專案管理，熱愛解謎與邏輯挑戰。</p>
-      <p>「保持叛逆，特立獨行」是我每天的提醒。</p>
-    </div>
-  </section>
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-nav"
+        aria-label="切換選單"
+      >
+        <span></span>
+        <span></span>
+      </button>
 
-  <!-- 文章區塊 -->
-  <section id="articles" class="section">
-    <div class="container">
-      <h2>文章專區</h2>
-      <div class="article-grid">
-        <article class="card">
-          <h3>為什麼我喜歡解謎</h3>
-          <p>我從小就熱愛邏輯遊戲、解謎與密室逃脫，這些經驗讓我養成了解構問題與創意思考的能力。</p>
-          <a href="articles/puzzle-love.html">閱讀更多</a>
-        </article>
-        <!-- 可加入更多文章卡片 -->
+      <nav id="site-nav" class="site-nav" aria-label="主選單">
+        <a href="#hero">Home</a>
+        <a href="#info">Info</a>
+        <a href="#work">Work</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="hero" class="section hero-section">
+      <div class="hero-copy">
+        <p class="eyebrow">Product Manager / Puzzle Solver / Rebellious Mindset</p>
+        <h1>王承皓</h1>
+        <p class="hero-text">
+          來自台灣的經理人，專注於增強自己在各種領域的技能。<br />
+          每天提醒自己「保持叛逆，特立獨行」。
+        </p>
+        <ul class="hero-tags" aria-label="個人標籤">
+          <li>Planning</li>
+          <li>Project Management</li>
+          <li>Puzzle Thinking</li>
+        </ul>
+        <div class="hero-actions">
+          <a class="button primary" href="#info">About Me</a>
+          <a class="button secondary" href="#contact">Contact Me</a>
+        </div>
       </div>
-    </div>
-  </section>
 
-  <!-- 聯絡我區塊 -->
-  <section id="contact" class="section">
-    <div class="container">
-      <h2>聯絡我</h2>
-      <form action="https://script.google.com/macros/s/xxx/exec" method="POST" onsubmit="checkUser()">
-        <input type="text" name="name" placeholder="姓名" required />
-        <input type="email" name="email" placeholder="Email" required />
-        <textarea name="message" placeholder="您的訊息" rows="5" required></textarea>
-        <button type="submit">送出</button>
-      </form>
-    </div>
-  </section>
+      <div class="hero-visual">
+        <div class="portrait-card">
+          <img src="images/王承皓.jpg" alt="王承皓" />
+        </div>
+        <div class="hero-badge">
+          <span>ABAO</span>
+          <strong>Keep rebellious,<br />be maverick.</strong>
+        </div>
+      </div>
+    </section>
 
-  <!-- 頁腳 -->
-  <footer id="footer">
-    <p>&copy; 2025 王承皓 | Design by ABAO</p>
-    <div class="social">
-      <a href="https://www.facebook.com/wang.c.hao.9"><i class="fab fa-facebook"></i></a>
-      <a href="https://www.instagram.com/aboao.w/"><i class="fab fa-instagram"></i></a>
-      <a href="https://line.me/ti/p/5wklUV2_GE"><i class="fab fa-line"></i></a>
-    </div>
+    <section id="info" class="section">
+      <div class="section-shell">
+        <div class="section-heading">
+          <p class="eyebrow">Info</p>
+          <h2>Who am I</h2>
+        </div>
+
+        <div class="info-grid">
+          <article class="panel-card">
+            <h3>Basic Profile</h3>
+            <ul class="detail-list">
+              <li><span>姓名</span><strong>王承皓</strong></li>
+              <li><span>Name</span><strong>Wang Chen Hao</strong></li>
+              <li><span>綽號</span><strong>阿寶</strong></li>
+              <li><span>AKA</span><strong>ABAO</strong></li>
+            </ul>
+          </article>
+
+          <article class="panel-card">
+            <h3>Base Data</h3>
+            <ul class="detail-list">
+              <li><span>生日</span><strong>1994.11.02</strong></li>
+              <li><span>性別</span><strong>男</strong></li>
+              <li><span>興趣</span><strong>推理、解謎</strong></li>
+              <li><span>技能</span><strong>企劃、專案管理</strong></li>
+            </ul>
+          </article>
+        </div>
+
+        <article class="statement-card">
+          <p>
+            來自台灣的經理人，專注於增強自己在各種領域的技能。<br />
+            Manager from Taiwan, focusing on enhancing his skills in various fields.
+          </p>
+          <p>
+            他每天都會提醒自己「保持叛逆，特立獨行」。<br />
+            He reminds himself every day to "Keep rebellious, be maverick".
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="work" class="section work-section">
+      <div class="section-shell">
+        <div class="section-heading">
+          <p class="eyebrow">Work</p>
+          <h2>Experience Timeline</h2>
+        </div>
+
+        <div class="timeline">
+          <article class="timeline-item">
+            <p class="timeline-date">Now</p>
+            <div class="timeline-content">
+              <h3>Triple-i</h3>
+              <p>將科技帶入保險產，提供更好的溝通平台。將理財帶入生活，提供更簡單的計算工具。</p>
+            </div>
+          </article>
+
+          <article class="timeline-item">
+            <p class="timeline-date">2018 / 11</p>
+            <div class="timeline-content">
+              <h3>Speed Drifters</h3>
+              <p>
+                2019 年度最佳遊戲。是一款簡單上手、操作手感絕佳的賽車遊戲，不但開啟了台灣的賽車遊戲市場，至今依然活耀於排行榜。
+              </p>
+            </div>
+          </article>
+
+          <article class="timeline-item">
+            <p class="timeline-date">2018 / 02</p>
+            <div class="timeline-content">
+              <h3>Gash</h3>
+              <p>台港首選數位娛樂服務平台，提供網路金流、線上遊戲資訊。</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section contact-section">
+      <div class="section-shell section-shell-contrast">
+        <div class="section-heading">
+          <p class="eyebrow">Contact</p>
+          <h2>Contact Me</h2>
+        </div>
+
+        <div class="contact-layout">
+          <article class="contact-copy panel-card">
+            <h3>Let&apos;s talk</h3>
+            <p>如果你想聊產品、專案、合作，或只是想交流一個有趣的想法，都可以直接留言給我。</p>
+            <div class="social-links" aria-label="社群連結">
+              <a href="https://www.facebook.com/wang.c.hao.9" target="_blank" rel="noreferrer" aria-label="Facebook">
+                <i class="fa-brands fa-facebook-f"></i>
+              </a>
+              <a href="https://www.instagram.com/aboao.w/" target="_blank" rel="noreferrer" aria-label="Instagram">
+                <i class="fa-brands fa-instagram"></i>
+              </a>
+              <a href="https://line.me/ti/p/5wklUV2_GE" target="_blank" rel="noreferrer" aria-label="Line">
+                <i class="fa-brands fa-line"></i>
+              </a>
+            </div>
+          </article>
+
+          <div class="panel-card form-card">
+            <iframe
+              name="hidden_iframe"
+              id="hidden_iframe"
+              title="hidden form target"
+              class="hidden-frame"
+            ></iframe>
+            <form
+              action="https://script.google.com/macros/s/AKfycbxAT-oORea_UjGS7sYZOyjdmZ3dY-GFvJMaN1BERo0qdDHtXUNnXSiCn4cS6f_iBbIVRg/exec"
+              method="post"
+              target="hidden_iframe"
+              id="contact-form"
+            >
+              <div class="form-grid">
+                <label>
+                  <span>Name</span>
+                  <input type="text" name="name" placeholder="Name" required />
+                </label>
+                <label>
+                  <span>Phone</span>
+                  <input type="text" name="phone" placeholder="Phone" required />
+                </label>
+                <label class="full">
+                  <span>Email</span>
+                  <input type="email" name="email" placeholder="Email" required />
+                </label>
+                <label class="full">
+                  <span>Subject</span>
+                  <input type="text" name="subject" placeholder="Subject" required />
+                </label>
+                <label class="full">
+                  <span>Message</span>
+                  <textarea name="message" rows="6" placeholder="Message" required></textarea>
+                </label>
+              </div>
+              <button type="submit" class="button primary submit-button">Send Message</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 王承皓 | Design by ABAO</p>
   </footer>
 
-  <!-- JS -->
   <script src="assets/js/main.js"></script>
 </body>
-
 </html>
