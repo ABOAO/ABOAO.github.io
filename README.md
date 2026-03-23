@@ -5,6 +5,8 @@
 ## 🔧 技術棧
 
 - HTML5 / SCSS / JavaScript (Vanilla)
+- PWA（Web App Manifest + Service Worker + Offline Cache）
+- Firebase Web SDK（Analytics 初始化）
 - GSAP（未來規劃加入動畫）
 - 單頁式設計（One Page Design）
 - 表單串接 Google Apps Script 作為聯絡方式
@@ -27,6 +29,9 @@ images/
   ├── A.ico                       # favicon
   ├── LOGO.svg / Footer image.svg # LOGO 與底圖（看使用情況）
 index.html                        # 網站首頁（單頁式）
+manifest.json                     # PWA manifest
+offline.html                      # 離線 fallback 頁
+service-worker.js                 # PWA 快取與離線支援
 README.md                         # 本說明文件
 ```
 

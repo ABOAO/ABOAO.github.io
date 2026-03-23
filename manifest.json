@@ -1,0 +1,25 @@
+{
+  "name": "王承皓 | Product Manager",
+  "short_name": "ABAO",
+  "description": "王承皓的個人網站，展示產品思維、經歷與文章內容。",
+  "lang": "zh-Hant",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#dfe7ee",
+  "theme_color": "#f74354",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/A.ico",
+      "sizes": "48x48 32x32 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/images/LOGO.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
