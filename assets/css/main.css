@@ -272,12 +272,14 @@ body.motion-ready .section.is-visible {
 }
 
 .hero-section {
+  position: relative;
   min-height: calc(100vh - var(--header-height));
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
   align-items: center;
   gap: 48px;
   padding-top: 72px;
+  padding-bottom: 96px;
 }
 
 .eyebrow {
@@ -333,17 +335,20 @@ body.motion-ready .section.is-visible {
 }
 
 .scroll-indicator {
-  display: inline-flex;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 24px;
+  display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  margin-top: 36px;
   color: var(--muted);
   font-family: "Outfit", sans-serif;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  width: fit-content;
+  width: 100%;
 }
 
 .scroll-indicator-label {
@@ -729,6 +734,7 @@ body.motion-ready .section.is-visible {
     min-height: auto;
     gap: 32px;
     padding-top: 40px;
+    padding-bottom: 88px;
   }
 
   .hero-copy {
@@ -822,7 +828,7 @@ body.motion-ready .section.is-visible {
   }
 
   .scroll-indicator {
-    margin-top: 24px;
+    bottom: 16px;
   }
 
   .panel-card,
@@ -906,6 +912,7 @@ body.motion-ready .section.is-visible {
   .hero-section {
     gap: 24px;
     padding-top: 28px;
+    padding-bottom: 76px;
   }
 
   .section-shell {
