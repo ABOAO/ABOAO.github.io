@@ -332,10 +332,46 @@ body.motion-ready .section.is-visible {
   letter-spacing: 0.04em;
 }
 
-.hero-actions {
-  display: flex;
-  gap: 16px;
+.scroll-indicator {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
   margin-top: 36px;
+  color: var(--muted);
+  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.scroll-indicator-label {
+  font-size: 0.78rem;
+}
+
+.scroll-indicator-arrow {
+  width: 18px;
+  height: 18px;
+  border-right: 3px solid rgba(54, 54, 54, 0.65);
+  border-bottom: 3px solid rgba(54, 54, 54, 0.65);
+  transform: rotate(45deg);
+  animation: scroll-indicator-bounce 1.6s ease-in-out infinite;
+}
+
+.scroll-indicator:hover .scroll-indicator-arrow {
+  border-color: var(--accent);
+}
+
+@keyframes scroll-indicator-bounce {
+  0%,
+  100% {
+    transform: rotate(45deg) translate(0, 0);
+  }
+
+  50% {
+    transform: rotate(45deg) translate(6px, 6px);
+  }
 }
 
 .button {
@@ -785,10 +821,8 @@ body.motion-ready .section.is-visible {
     margin-bottom: 24px;
   }
 
-  .hero-actions {
-    flex-direction: column;
+  .scroll-indicator {
     margin-top: 24px;
-    gap: 12px;
   }
 
   .panel-card,
@@ -887,6 +921,19 @@ body.motion-ready .section.is-visible {
 
   .button {
     min-height: 48px;
+  }
+
+  .scroll-indicator {
+    gap: 8px;
+  }
+
+  .scroll-indicator-label {
+    font-size: 0.72rem;
+  }
+
+  .scroll-indicator-arrow {
+    width: 16px;
+    height: 16px;
   }
 
   .section-heading h2 {
