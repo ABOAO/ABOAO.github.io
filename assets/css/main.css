@@ -24,6 +24,8 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+  scroll-padding-top: var(--header-height);
 }
 
 body {
@@ -114,6 +116,8 @@ textarea {
 main {
   width: min(1120px, calc(100% - 48px));
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .site-header {
@@ -206,6 +210,8 @@ main {
 .section {
   padding: 112px 0;
   scroll-margin-top: calc(var(--header-height) + 24px);
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
 }
 
 body.motion-ready .section {
@@ -946,4 +952,205 @@ body.motion-ready .section.is-visible {
     justify-content: center;
     padding: 12px 16px;
   }
+}
+
+/* ============================================================
+   FX: PARTICLE CANVAS (behind all content)
+   ============================================================ */
+.fx-particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================================
+   FX: GRAIN OVERLAY
+   ============================================================ */
+.fx-grain {
+  position: fixed;
+  inset: -100%;
+  width: 300%;
+  height: 300%;
+  pointer-events: none;
+  z-index: 200;
+  opacity: 0.04;
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  animation: fx-grain-move 0.8s steps(2) infinite;
+}
+
+@keyframes fx-grain-move {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-3%, 2%);
+  }
+  50% {
+    transform: translate(2%, -3%);
+  }
+  75% {
+    transform: translate(-2%, -2%);
+  }
+}
+
+/* ============================================================
+   FX: CUSTOM CURSOR (desktop / fine pointer only)
+   ============================================================ */
+.has-cursor,
+.has-cursor * {
+  cursor: none !important;
+}
+
+.fx-cursor-ring {
+  position: fixed;
+  top: -20px;
+  left: -20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(247, 67, 84, 0.5);
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0;
+  transition:
+    width 0.28s ease,
+    height 0.28s ease,
+    top 0.28s ease,
+    left 0.28s ease,
+    background-color 0.28s ease,
+    border-color 0.28s ease,
+    opacity 0.3s ease;
+  will-change: transform;
+}
+
+.fx-cursor-ring.visible {
+  opacity: 1;
+}
+
+.fx-cursor-ring.big {
+  width: 58px;
+  height: 58px;
+  top: -29px;
+  left: -29px;
+  background-color: rgba(247, 67, 84, 0.07);
+  border-color: var(--accent);
+}
+
+.fx-cursor-dot {
+  position: fixed;
+  top: -4px;
+  left: -4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  will-change: transform;
+}
+
+.fx-cursor-dot.visible {
+  opacity: 1;
+}
+
+/* ============================================================
+   FX: TEXT CHARACTER REVEAL
+   ============================================================ */
+.hero-copy h1 .ch,
+.section-heading h2 .ch {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.45em);
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i) * 28ms + 0.15s),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i) * 28ms + 0.15s);
+}
+
+.hero-copy h1.chars-in .ch,
+.section-heading h2.chars-in .ch {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
+   FX: SCROLL PROGRESS INDICATOR
+   ============================================================ */
+.fx-scroll-progress {
+  position: fixed;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.fx-scroll-progress-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(54, 54, 54, 0.2);
+  border: 1.5px solid rgba(54, 54, 54, 0.3);
+  transition: background 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+}
+
+.fx-scroll-progress-dot.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: scale(1.5);
+}
+
+@media (max-width: 720px) {
+  .fx-scroll-progress {
+    display: none;
+  }
+}
+
+/* ============================================================
+   FX: SECTION ENTER STAGGER (cards within sections)
+   ============================================================ */
+body.motion-ready .panel-card,
+body.motion-ready .statement-card,
+body.motion-ready .timeline-item {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.5s ease var(--stagger-delay, 0.1s),
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) var(--stagger-delay, 0.1s);
+}
+
+body.motion-ready .is-visible .panel-card,
+body.motion-ready .is-visible .statement-card,
+body.motion-ready .is-visible .timeline-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
+   FX: HERO VISUAL FLOAT ANIMATION
+   ============================================================ */
+.hero-visual {
+  animation: hero-float 5s ease-in-out infinite;
+}
+
+@keyframes hero-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Override float when JS parallax is active */
+.hero-visual.has-parallax {
+  animation: none;
 }
