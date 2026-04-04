@@ -283,7 +283,7 @@ body.motion-ready .section.is-visible {
   grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
   align-items: center;
   gap: 48px;
-  padding-top: 72px;
+  padding-top: 0;
 }
 
 .eyebrow {
@@ -734,7 +734,7 @@ body.motion-ready .section.is-visible {
   .hero-section {
     min-height: auto;
     gap: 32px;
-    padding-top: 40px;
+    padding-top: 0;
   }
 
   .hero-copy {
@@ -911,7 +911,7 @@ body.motion-ready .section.is-visible {
 
   .hero-section {
     gap: 24px;
-    padding-top: 28px;
+    padding-top: 0;
   }
 
   .section-shell {
