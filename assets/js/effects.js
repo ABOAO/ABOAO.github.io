@@ -27,12 +27,16 @@
     const snapTo = (idx) => {
       if (idx < 0 || idx >= sections.length || snapping) return;
       snapping = true;
-      const top = Math.max(
-        0,
-        sections[idx].getBoundingClientRect().top + window.scrollY - hdr()
-      );
-      window.scrollTo({ top, behavior: 'smooth' });
-      setTimeout(() => { snapping = false; }, 1000);
+
+      if (idx === 0) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        const inner = sections[idx].querySelector('.section-shell');
+        const target = inner || sections[idx];
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      setTimeout(() => { snapping = false; }, 800);
     };
 
     const currentIdx = () => {
