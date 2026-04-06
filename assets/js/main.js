@@ -27,20 +27,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const scrollToHash = (hash, updateHistory = false) => {
     if (!hash || hash === "#") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (window.__lenis) {
+        window.__lenis.scrollTo(0, { duration: 1.4 });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      if (updateHistory) window.history.pushState(null, "", "#");
       return;
     }
 
     const target = document.querySelector(hash);
-    if (!target) {
-      return;
-    }
+    if (!target) return;
 
-    const scrollTarget = getScrollTarget(target);
-    const top = isDesktopLayout()
-      ? getCenteredScrollTop(scrollTarget)
-      : Math.max(0, target.getBoundingClientRect().top + window.scrollY - getHeaderOffset());
-    window.scrollTo({ top, behavior: "smooth" });
+    if (window.__lenis) {
+      window.__lenis.scrollTo(target, { offset: -getHeaderOffset(), duration: 1.4 });
+    } else {
+      const scrollTarget = getScrollTarget(target);
+      const top = isDesktopLayout()
+        ? getCenteredScrollTop(scrollTarget)
+        : Math.max(0, target.getBoundingClientRect().top + window.scrollY - getHeaderOffset());
+      window.scrollTo({ top, behavior: "smooth" });
+    }
 
     if (updateHistory) {
       window.history.pushState(null, "", hash);
