@@ -12,103 +12,134 @@
 
   /* ============================================================
    * 1. SECTION SCROLL SNAP (卡點)
-   *    Smart JS-based snap: free scroll within tall sections,
-   *    snaps to next/prev when reaching a section boundary.
+   *    Custom RAF-based easing for consistent cross-browser feel.
+   *    One gesture = one section. Settle after gesture ends.
    * ============================================================ */
   function initScrollSnap() {
     const sections = qa('.section');
     if (sections.length === 0) return;
+    if (window.innerWidth <= 960 || !isFine()) return;
 
-    const hdr = () => q('.site-header')?.offsetHeight || 88;
-    let snapping = false;
-    let wheelAccum = 0;
+    let snapping     = false;
+    let gestureFired = false;
+    let wheelAccum   = 0;
     let lastWheelTime = 0;
+    let gestureEndTimer = 0;
+    let rafId = 0;
 
-    const snapTo = (idx) => {
-      if (idx < 0 || idx >= sections.length || snapping) return;
-      snapping = true;
+    // ── geometry helpers ──────────────────────────────────────
+    const headerH = () => q('.site-header')?.offsetHeight || 88;
+    // Absolute document Y of the visual content-area center (below fixed header)
+    const contentMid = () =>
+      window.scrollY + window.innerHeight / 2 + headerH() / 2;
 
-      if (idx === 0) {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        const inner = sections[idx].querySelector('.section-shell');
-        const target = inner || sections[idx];
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-
-      setTimeout(() => { snapping = false; }, 800);
+    const getCenteredScrollTop = (section) => {
+      const rect = section.getBoundingClientRect();
+      const secMidDoc = rect.top + window.scrollY + rect.height / 2;
+      const target = secMidDoc - (window.innerHeight / 2 + headerH() / 2);
+      const maxTop = Math.max(
+        document.documentElement.scrollHeight - window.innerHeight, 0
+      );
+      return Math.min(Math.max(target, 0), maxTop);
     };
 
     const currentIdx = () => {
-      const threshold = window.scrollY + hdr() + 60;
+      const mid = contentMid();
       let best = 0;
       sections.forEach((s, i) => {
-        if (s.getBoundingClientRect().top + window.scrollY <= threshold) best = i;
+        if (s.getBoundingClientRect().top + window.scrollY <= mid) best = i;
       });
       return best;
     };
 
+// ── custom easing scroll ──────────────────────────────────
+    // ease-in-out-cubic: gradual start → confident mid → soft landing
+    const ease = (t) =>
+      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+    const animateTo = (targetY, onDone) => {
+      cancelAnimationFrame(rafId);
+      const startY = window.scrollY;
+      const dist   = targetY - startY;
+      if (Math.abs(dist) < 1) { onDone?.(); return; }
+      // Duration scales with distance: feels consistent regardless of section gap
+      const dur = Math.min(Math.max(Math.abs(dist) * 0.52, 400), 680);
+      const t0  = performance.now();
+
+      const tick = (now) => {
+        const p = Math.min((now - t0) / dur, 1);
+        window.scrollTo(0, startY + dist * ease(p));
+        if (p < 1) {
+          rafId = requestAnimationFrame(tick);
+        } else {
+          onDone?.();
+        }
+      };
+      rafId = requestAnimationFrame(tick);
+    };
+
+    // ── snap ─────────────────────────────────────────────────
+    const snapTo = (idx) => {
+      if (idx < 0 || idx >= sections.length || snapping) return;
+      snapping = true;
+      animateTo(getCenteredScrollTop(sections[idx]), () => {
+        snapping = false;
+      });
+    };
+
+    // ── gesture end: just reset state, no post-correction ─────
+    // Snap fires during the gesture; page is already at center when gesture ends.
+    const onGestureEnd = () => {
+      gestureFired = false;
+      wheelAccum   = 0;
+    };
+
+    // ── wheel listener ────────────────────────────────────────
     window.addEventListener('wheel', (e) => {
-      // Skip form inputs — allow natural scroll within them
       if (e.target.closest('input, textarea, select')) return;
 
-      if (snapping) {
-        e.preventDefault();
+      // Gesture-end timer: fires when wheel events stop for 180 ms
+      clearTimeout(gestureEndTimer);
+      gestureEndTimer = setTimeout(onGestureEnd, 180);
+
+      if (snapping || gestureFired) { e.preventDefault(); return; }
+
+      // Distinguish mouse wheel (large discrete delta) from trackpad (tiny continuous)
+      const isMouse = Math.abs(e.deltaY) >= 80;
+
+      if (isMouse) {
+        // Mouse: one click = one section, no accumulation needed
+        const dir = Math.sign(e.deltaY);
+        const idx = currentIdx();
+        const rect = sections[idx].getBoundingClientRect();
+        if (dir > 0 && rect.bottom <= window.innerHeight + 120) {
+          e.preventDefault(); gestureFired = true; snapTo(idx + 1);
+        } else if (dir < 0 && rect.top >= -120) {
+          e.preventDefault(); gestureFired = true; snapTo(idx - 1);
+        }
         return;
       }
 
+      // Trackpad: accumulate until intent is clear
       const now = Date.now();
-      if (now - lastWheelTime > 250) wheelAccum = 0;
+      if (now - lastWheelTime > 350) wheelAccum = 0;
       lastWheelTime = now;
       wheelAccum += e.deltaY;
 
-      // Ignore tiny movements — no preventDefault, let natural scroll happen
-      if (Math.abs(wheelAccum) < 60) return;
+      if (Math.abs(wheelAccum) < 48) return;
 
-      const dir = Math.sign(wheelAccum);
+      const dir  = Math.sign(wheelAccum);
       wheelAccum = 0;
-
-      const idx = currentIdx();
+      const idx  = currentIdx();
       const rect = sections[idx].getBoundingClientRect();
-      const ZONE = 80; // px from section edge to trigger snap
+      const ZONE = 150;
 
-      // Scrolling down and near the bottom of current section → snap to next
       if (dir > 0 && rect.bottom <= window.innerHeight + ZONE) {
-        e.preventDefault();
-        snapTo(idx + 1);
-        return;
-      }
-
-      // Scrolling up and near the top of current section → snap to previous
-      if (dir < 0 && rect.top >= hdr() - ZONE) {
-        e.preventDefault();
-        snapTo(idx - 1);
+        e.preventDefault(); gestureFired = true; snapTo(idx + 1);
+      } else if (dir < 0 && rect.top >= -ZONE) {
+        e.preventDefault(); gestureFired = true; snapTo(idx - 1);
       }
     }, { passive: false });
-
-    // Touch swipe support
-    let touchStartY = 0;
-    let touchStartTime = 0;
-
-    window.addEventListener('touchstart', (e) => {
-      touchStartY = e.touches[0].clientY;
-      touchStartTime = Date.now();
-    }, { passive: true });
-
-    window.addEventListener('touchend', (e) => {
-      if (snapping) return;
-      const dy = touchStartY - e.changedTouches[0].clientY;
-      const dt = Date.now() - touchStartTime;
-      if (Math.abs(dy) < 55 || dt > 600) return; // too slow or too small
-
-      const dir = Math.sign(dy);
-      const idx = currentIdx();
-      const rect = sections[idx].getBoundingClientRect();
-      const ZONE = 100;
-
-      if (dir > 0 && rect.bottom <= window.innerHeight + ZONE) snapTo(idx + 1);
-      else if (dir < 0 && rect.top >= hdr() - ZONE) snapTo(idx - 1);
-    }, { passive: true });
   }
 
   /* ============================================================
