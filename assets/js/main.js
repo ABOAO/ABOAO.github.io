@@ -10,24 +10,44 @@ document.addEventListener("DOMContentLoaded", () => {
   const contactForm = document.getElementById("contact-form");
   const hiddenFrame = document.getElementById("hidden_iframe");
   body.classList.add("motion-ready");
+  const isDesktopLayout = () => window.innerWidth > 960;
   const getHeaderOffset = () => {
     const header = document.querySelector(".site-header");
     return (header?.offsetHeight || 0) + 20;
   };
+  const getScrollTarget = (section) => section;
+  const getCenteredScrollTop = (element) => {
+    const hdr = document.querySelector('.site-header')?.offsetHeight || 88;
+    const rect = element.getBoundingClientRect();
+    const sectionMidDoc = rect.top + window.scrollY + rect.height / 2;
+    const centeredTop = sectionMidDoc - (window.innerHeight / 2 + hdr / 2);
+    const maxTop = Math.max(document.documentElement.scrollHeight - window.innerHeight, 0);
+    return Math.min(Math.max(centeredTop, 0), maxTop);
+  };
 
   const scrollToHash = (hash, updateHistory = false) => {
     if (!hash || hash === "#") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (window.__lenis) {
+        window.__lenis.scrollTo(0, { duration: 1.4 });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      if (updateHistory) window.history.pushState(null, "", "#");
       return;
     }
 
     const target = document.querySelector(hash);
-    if (!target) {
-      return;
-    }
+    if (!target) return;
 
-    const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - getHeaderOffset());
-    window.scrollTo({ top, behavior: "smooth" });
+    if (window.__lenis) {
+      window.__lenis.scrollTo(target, { offset: -getHeaderOffset(), duration: 1.4 });
+    } else {
+      const scrollTarget = getScrollTarget(target);
+      const top = isDesktopLayout()
+        ? getCenteredScrollTop(scrollTarget)
+        : Math.max(0, target.getBoundingClientRect().top + window.scrollY - getHeaderOffset());
+      window.scrollTo({ top, behavior: "smooth" });
+    }
 
     if (updateHistory) {
       window.history.pushState(null, "", hash);
@@ -95,10 +115,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const setActiveLink = () => {
     let currentSection = sections[0];
+    const focusLine = isDesktopLayout()
+      ? window.innerHeight / 2
+      : 160;
 
     sections.forEach((section) => {
-      const rect = section.getBoundingClientRect();
-      if (rect.top <= 160 && rect.bottom > 160) {
+      const rect = getScrollTarget(section).getBoundingClientRect();
+      if (rect.top <= focusLine && rect.bottom > focusLine) {
         currentSection = section;
       }
     });
