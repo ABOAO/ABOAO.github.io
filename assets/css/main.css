@@ -23,7 +23,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* scroll-behavior handled by Lenis smooth scroll */
   scroll-padding-top: var(--header-height);
   overflow-x: clip;
 }
@@ -228,10 +228,10 @@ main {
 
 body.motion-ready .section {
   opacity: 0;
-  transform: translateY(56px) scale(0.98);
+  transform: translateY(80px) scale(0.97);
   transition:
-    opacity 0.7s ease,
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 1.0s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.0s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 body.motion-ready .section.is-visible {
@@ -1227,10 +1227,10 @@ body.motion-ready .panel-card,
 body.motion-ready .statement-card,
 body.motion-ready .timeline-item {
   opacity: 0;
-  transform: translateY(18px);
+  transform: translateY(32px);
   transition:
-    opacity 0.5s ease var(--stagger-delay, 0.1s),
-    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) var(--stagger-delay, 0.1s);
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--stagger-delay, 0.1s),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--stagger-delay, 0.1s);
 }
 
 body.motion-ready .is-visible .panel-card,

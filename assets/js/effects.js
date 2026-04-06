@@ -11,135 +11,36 @@
   const isFine = () => window.matchMedia('(pointer: fine)').matches;
 
   /* ============================================================
-   * 1. SECTION SCROLL SNAP (卡點)
-   *    Custom RAF-based easing for consistent cross-browser feel.
-   *    One gesture = one section. Settle after gesture ends.
+   * 1. LENIS SMOOTH SCROLL
+   *    Momentum / inertia scrolling — gives the page a sense of
+   *    physical weight (inspired by lusion.co).
+   *    lerp 0.075 = heavy, cinematic feel.
    * ============================================================ */
-  function initScrollSnap() {
-    const sections = qa('.section');
-    if (sections.length === 0) return;
-    if (window.innerWidth <= 960 || !isFine()) return;
+  function initLenis() {
+    if (typeof Lenis === 'undefined') return;
 
-    let snapping     = false;
-    let gestureFired = false;
-    let wheelAccum   = 0;
-    let lastWheelTime = 0;
-    let gestureEndTimer = 0;
-    let rafId = 0;
+    const lenis = new Lenis({
+      lerp: 0.075,          // lower = more inertia / heavier feel
+      wheelMultiplier: 0.9, // slightly softer wheel response
+      smoothWheel: true,
+      syncTouch: false,     // keep native touch scrolling on mobile
+    });
 
-    // ── geometry helpers ──────────────────────────────────────
-    const headerH = () => q('.site-header')?.offsetHeight || 88;
-    // Absolute document Y of the visual content-area center (below fixed header)
-    const contentMid = () =>
-      window.scrollY + window.innerHeight / 2 + headerH() / 2;
+    // Expose globally so main.js can call lenis.scrollTo()
+    window.__lenis = lenis;
 
-    const getCenteredScrollTop = (section) => {
-      const rect = section.getBoundingClientRect();
-      const secMidDoc = rect.top + window.scrollY + rect.height / 2;
-      const target = secMidDoc - (window.innerHeight / 2 + headerH() / 2);
-      const maxTop = Math.max(
-        document.documentElement.scrollHeight - window.innerHeight, 0
-      );
-      return Math.min(Math.max(target, 0), maxTop);
-    };
+    // Drive Lenis with requestAnimationFrame
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
 
-    const currentIdx = () => {
-      const mid = contentMid();
-      let best = 0;
-      sections.forEach((s, i) => {
-        if (s.getBoundingClientRect().top + window.scrollY <= mid) best = i;
-      });
-      return best;
-    };
-
-// ── custom easing scroll ──────────────────────────────────
-    // ease-in-out-cubic: gradual start → confident mid → soft landing
-    const ease = (t) =>
-      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-
-    const animateTo = (targetY, onDone) => {
-      cancelAnimationFrame(rafId);
-      const startY = window.scrollY;
-      const dist   = targetY - startY;
-      if (Math.abs(dist) < 1) { onDone?.(); return; }
-      // Duration scales with distance: feels consistent regardless of section gap
-      const dur = Math.min(Math.max(Math.abs(dist) * 0.52, 400), 680);
-      const t0  = performance.now();
-
-      const tick = (now) => {
-        const p = Math.min((now - t0) / dur, 1);
-        window.scrollTo(0, startY + dist * ease(p));
-        if (p < 1) {
-          rafId = requestAnimationFrame(tick);
-        } else {
-          onDone?.();
-        }
-      };
-      rafId = requestAnimationFrame(tick);
-    };
-
-    // ── snap ─────────────────────────────────────────────────
-    const snapTo = (idx) => {
-      if (idx < 0 || idx >= sections.length || snapping) return;
-      snapping = true;
-      animateTo(getCenteredScrollTop(sections[idx]), () => {
-        snapping = false;
-      });
-    };
-
-    // ── gesture end: just reset state, no post-correction ─────
-    // Snap fires during the gesture; page is already at center when gesture ends.
-    const onGestureEnd = () => {
-      gestureFired = false;
-      wheelAccum   = 0;
-    };
-
-    // ── wheel listener ────────────────────────────────────────
-    window.addEventListener('wheel', (e) => {
-      if (e.target.closest('input, textarea, select')) return;
-
-      // Gesture-end timer: fires when wheel events stop for 180 ms
-      clearTimeout(gestureEndTimer);
-      gestureEndTimer = setTimeout(onGestureEnd, 180);
-
-      if (snapping || gestureFired) { e.preventDefault(); return; }
-
-      // Distinguish mouse wheel (large discrete delta) from trackpad (tiny continuous)
-      const isMouse = Math.abs(e.deltaY) >= 80;
-
-      if (isMouse) {
-        // Mouse: one click = one section, no accumulation needed
-        const dir = Math.sign(e.deltaY);
-        const idx = currentIdx();
-        const rect = sections[idx].getBoundingClientRect();
-        if (dir > 0 && rect.bottom <= window.innerHeight + 120) {
-          e.preventDefault(); gestureFired = true; snapTo(idx + 1);
-        } else if (dir < 0 && rect.top >= -120) {
-          e.preventDefault(); gestureFired = true; snapTo(idx - 1);
-        }
-        return;
-      }
-
-      // Trackpad: accumulate until intent is clear
-      const now = Date.now();
-      if (now - lastWheelTime > 350) wheelAccum = 0;
-      lastWheelTime = now;
-      wheelAccum += e.deltaY;
-
-      if (Math.abs(wheelAccum) < 48) return;
-
-      const dir  = Math.sign(wheelAccum);
-      wheelAccum = 0;
-      const idx  = currentIdx();
-      const rect = sections[idx].getBoundingClientRect();
-      const ZONE = 150;
-
-      if (dir > 0 && rect.bottom <= window.innerHeight + ZONE) {
-        e.preventDefault(); gestureFired = true; snapTo(idx + 1);
-      } else if (dir < 0 && rect.top >= -ZONE) {
-        e.preventDefault(); gestureFired = true; snapTo(idx - 1);
-      }
-    }, { passive: false });
+    // Keep Lenis in sync with hash-change navigation
+    window.addEventListener('hashchange', () => {
+      const el = document.querySelector(window.location.hash);
+      if (el) lenis.scrollTo(el, { offset: -88, duration: 1.4 });
+    });
   }
 
   /* ============================================================
@@ -445,7 +346,7 @@
     initCursor();
     initParticles();
     initScrollProgress();
-    initScrollSnap();
+    initLenis();
     initTextReveal();
     initMagnetic();
     initParallax();
