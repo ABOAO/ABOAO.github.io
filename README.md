@@ -40,8 +40,37 @@ README.md                         # 本說明文件
 本網站以 GitHub Pages 發佈：  
 [https://aboao.github.io/](https://aboao.github.io/)
 
-## 📌 待辦事項
+## UV 本機啟動
 
-- [ ] 整合 ScrollTrigger 或 Locomotive Scroll 動畫
-- [ ] 設計文章區資料來源（如 JSON 或 Markdown）
-- [ ] 優化 RWD 響應式排版
+這個專案目前是靜態網站，不需要額外的 Python 套件也能啟動。本地開發可直接使用：
+
+```bash
+uv sync
+uv run python -m http.server 8000
+```
+
+接著開啟 `http://localhost:8000`。
+
+如果之後要加入 Python 套件，使用：
+
+```bash
+uv add 套件名
+```
+
+例如：
+
+```bash
+uv add fastapi
+uv add --dev ruff
+```
+
+常用指令：
+
+```bash
+uv remove 套件名
+uv sync
+uv lock
+uv run python your_script.py
+```
+
+
