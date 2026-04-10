@@ -9,49 +9,12 @@ document.addEventListener("DOMContentLoaded", () => {
     .filter(Boolean);
   const contactForm = document.getElementById("contact-form");
   const hiddenFrame = document.getElementById("hidden_iframe");
-  body.classList.add("motion-ready");
-  const isDesktopLayout = () => window.innerWidth > 960;
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
   const getHeaderOffset = () => {
     const header = document.querySelector(".site-header");
-    return (header?.offsetHeight || 0) + 20;
-  };
-  const getScrollTarget = (section) => section;
-  const getCenteredScrollTop = (element) => {
-    const hdr = document.querySelector('.site-header')?.offsetHeight || 88;
-    const rect = element.getBoundingClientRect();
-    const sectionMidDoc = rect.top + window.scrollY + rect.height / 2;
-    const centeredTop = sectionMidDoc - (window.innerHeight / 2 + hdr / 2);
-    const maxTop = Math.max(document.documentElement.scrollHeight - window.innerHeight, 0);
-    return Math.min(Math.max(centeredTop, 0), maxTop);
-  };
-
-  const scrollToHash = (hash, updateHistory = false) => {
-    if (!hash || hash === "#") {
-      if (window.__lenis) {
-        window.__lenis.scrollTo(0, { duration: 1.4 });
-      } else {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-      if (updateHistory) window.history.pushState(null, "", "#");
-      return;
-    }
-
-    const target = document.querySelector(hash);
-    if (!target) return;
-
-    if (window.__lenis) {
-      window.__lenis.scrollTo(target, { offset: -getHeaderOffset(), duration: 1.4 });
-    } else {
-      const scrollTarget = getScrollTarget(target);
-      const top = isDesktopLayout()
-        ? getCenteredScrollTop(scrollTarget)
-        : Math.max(0, target.getBoundingClientRect().top + window.scrollY - getHeaderOffset());
-      window.scrollTo({ top, behavior: "smooth" });
-    }
-
-    if (updateHistory) {
-      window.history.pushState(null, "", hash);
-    }
+    return (header?.offsetHeight || 0) + 18;
   };
 
   const closeMenu = () => {
@@ -66,9 +29,28 @@ document.addEventListener("DOMContentLoaded", () => {
     body.classList.add("menu-open");
   };
 
+  const scrollToHash = (hash, updateHistory = false) => {
+    if (!hash || hash === "#") return;
+
+    const target = document.querySelector(hash);
+    if (!target) return;
+
+    const offset = -getHeaderOffset();
+
+    if (window.__lenis && !prefersReducedMotion.matches) {
+      window.__lenis.scrollTo(target, { offset, duration: 1.05 });
+    } else {
+      const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY + offset);
+      window.scrollTo({ top, behavior: prefersReducedMotion.matches ? "auto" : "smooth" });
+    }
+
+    if (updateHistory) {
+      window.history.pushState(null, "", hash);
+    }
+  };
+
   navToggle?.addEventListener("click", () => {
-    const isOpen = nav?.classList.contains("is-open");
-    if (isOpen) {
+    if (nav?.classList.contains("is-open")) {
       closeMenu();
       return;
     }
@@ -77,106 +59,56 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   anchorLinks.forEach((link) => {
-    link.addEventListener("click", () => {
-      if (window.innerWidth <= 720) {
-        closeMenu();
-      }
-    });
-  });
-
-  anchorLinks.forEach((link) => {
     link.addEventListener("click", (event) => {
       const hash = link.getAttribute("href");
-      if (!hash || hash === "#") {
-        return;
-      }
+      const target = hash ? document.querySelector(hash) : null;
 
-      const target = document.querySelector(hash);
-      if (!target) {
-        return;
-      }
+      if (!hash || !target) return;
 
       event.preventDefault();
+      closeMenu();
       scrollToHash(hash, true);
     });
   });
 
   document.addEventListener("click", (event) => {
-    if (!nav?.classList.contains("is-open")) {
-      return;
-    }
-
-    if (nav.contains(event.target) || navToggle?.contains(event.target)) {
-      return;
-    }
+    if (!nav?.classList.contains("is-open")) return;
+    if (nav.contains(event.target) || navToggle?.contains(event.target)) return;
 
     closeMenu();
   });
 
   const setActiveLink = () => {
+    if (!sections.length) return;
+
+    const focusLine = window.innerHeight * 0.4;
     let currentSection = sections[0];
-    const focusLine = isDesktopLayout()
-      ? window.innerHeight / 2
-      : 160;
 
     sections.forEach((section) => {
-      const rect = getScrollTarget(section).getBoundingClientRect();
+      const rect = section.getBoundingClientRect();
       if (rect.top <= focusLine && rect.bottom > focusLine) {
         currentSection = section;
       }
     });
 
     navLinks.forEach((link) => {
-      const isActive = link.getAttribute("href") === `#${currentSection.id}`;
-      link.classList.toggle("active", isActive);
+      link.classList.toggle("active", link.getAttribute("href") === `#${currentSection.id}`);
     });
   };
 
   setActiveLink();
   document.addEventListener("scroll", setActiveLink, { passive: true });
   window.addEventListener("resize", () => {
-    if (window.innerWidth > 720) {
-      closeMenu();
-    }
+    if (window.innerWidth > 760) closeMenu();
     setActiveLink();
   });
+
   window.addEventListener("hashchange", () => {
     scrollToHash(window.location.hash);
   });
 
   if (window.location.hash) {
-    window.setTimeout(() => {
-      scrollToHash(window.location.hash);
-    }, 0);
-  }
-
-  if ("IntersectionObserver" in window) {
-    const sectionObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) {
-            return;
-          }
-
-          entry.target.classList.add("is-visible");
-        });
-      },
-      {
-        threshold: 0.2,
-        rootMargin: "0px 0px -8% 0px",
-      }
-    );
-
-    sections.forEach((section, index) => {
-      if (index === 0) {
-        section.classList.add("is-visible");
-        return;
-      }
-
-      sectionObserver.observe(section);
-    });
-  } else {
-    sections.forEach((section) => section.classList.add("is-visible"));
+    window.setTimeout(() => scrollToHash(window.location.hash), 0);
   }
 
   if (contactForm && hiddenFrame) {
@@ -187,9 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     hiddenFrame.addEventListener("load", () => {
-      if (!submitted) {
-        return;
-      }
+      if (!submitted) return;
 
       alert("Message has been sent!");
       contactForm.reset();

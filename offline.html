@@ -3,16 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#f74354" />
+  <meta name="theme-color" content="#07080b" />
   <title>目前離線中 | ABAO</title>
   <style>
     :root {
-      color-scheme: light;
-      --bg: #dfe7ee;
-      --surface: rgba(255, 255, 255, 0.84);
-      --text: #222;
-      --muted: #5d6671;
-      --accent: #f74354;
+      color-scheme: dark;
+      --bg: #07080b;
+      --surface: rgba(15, 18, 23, 0.86);
+      --text: #f5f8fb;
+      --muted: #a8b2bd;
+      --accent: #5ff3ff;
+      --accent-2: #98ff63;
+      --line: rgba(255, 255, 255, 0.12);
     }
 
     * {
@@ -25,33 +27,36 @@
       display: grid;
       place-items: center;
       padding: 24px;
-      font-family: "Noto Sans TC", sans-serif;
+      font-family: "Noto Sans TC", system-ui, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at top left, rgba(110, 150, 194, 0.28), transparent 24%),
-        radial-gradient(circle at bottom right, rgba(247, 67, 84, 0.14), transparent 24%),
-        linear-gradient(180deg, #e8eef4 0%, var(--bg) 100%);
+        repeating-linear-gradient(90deg, rgba(95, 243, 255, 0.08) 0 1px, transparent 1px 72px),
+        repeating-linear-gradient(0deg, rgba(95, 243, 255, 0.05) 0 1px, transparent 1px 72px),
+        linear-gradient(135deg, rgba(95, 243, 255, 0.1), transparent 34%),
+        linear-gradient(180deg, #07080b 0%, #050608 100%);
+      line-height: 1.7;
     }
 
     main {
       width: min(560px, 100%);
       padding: 32px;
-      border-radius: 28px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
       background: var(--surface);
+      box-shadow: 0 22px 80px rgba(0, 0, 0, 0.42);
       backdrop-filter: blur(18px);
-      box-shadow: 0 24px 60px rgba(28, 44, 66, 0.16);
     }
 
     h1 {
       margin: 0 0 12px;
-      font-size: clamp(2rem, 6vw, 3rem);
+      font-family: "Outfit", system-ui, sans-serif;
+      font-size: 2.6rem;
       line-height: 1.05;
     }
 
     p {
       margin: 0 0 14px;
       color: var(--muted);
-      line-height: 1.7;
     }
 
     a {
@@ -61,11 +66,21 @@
       min-height: 48px;
       margin-top: 10px;
       padding: 0 18px;
-      border-radius: 999px;
-      background: var(--accent);
-      color: #fff;
-      font-weight: 700;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #041013;
+      font-weight: 800;
       text-decoration: none;
+    }
+
+    @media (max-width: 520px) {
+      main {
+        padding: 24px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
     }
   </style>
 </head>

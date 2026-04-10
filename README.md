@@ -1,13 +1,13 @@
 # 王承皓個人網站（ABOAO.github.io）
 
-這是我用來展示個人簡介與文章的單頁式網站，採用 HTML + SCSS + JavaScript 打造，並配合 GitHub Pages 發佈。
+這是我用來展示個人簡介與文章的單頁式網站，採用 HTML + CSS + JavaScript 打造，並配合 GitHub Pages 發佈。
 
 ## 🔧 技術棧
 
-- HTML5 / SCSS / JavaScript (Vanilla)
+- HTML5 / CSS / JavaScript (Vanilla)
 - PWA（Web App Manifest + Service Worker + Offline Cache）
 - Firebase Web SDK（Analytics 初始化）
-- GSAP（未來規劃加入動畫）
+- Lenis + Vanilla JS 動畫（進場、視差、hover、scroll progress）
 - 單頁式設計（One Page Design）
 - 表單串接 Google Apps Script 作為聯絡方式
 
@@ -16,12 +16,13 @@
 ```
 assets/
   ├── css/
-  │   ├── main.css                # 編譯後 CSS
+  │   ├── main.css                # 目前主要維護的樣式入口
   │   └── images/                 # 舊版背景圖（可清理）
   ├── js/
-  │   └── main.js                 # 一頁式初始化 JS
+  │   ├── main.js                 # 導覽、錨點、表單互動
+  │   └── effects.js              # 動畫、進度條、粒子與視差效果
   ├── sass/
-  │   ├── main.scss               # SCSS 原始樣式
+  │   ├── main.scss               # 舊版 SCSS（目前未作為主要樣式來源）
   │   ├── libs/                   # 原本引用外部樣式，可清理
   │   └── webfonts/               # 字體資源夾（如沒用可刪）
 images/
@@ -72,5 +73,3 @@ uv sync
 uv lock
 uv run python your_script.py
 ```
-
-

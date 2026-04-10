@@ -8,9 +8,9 @@
     name="description"
     content="王承皓，來自台灣的產品經理，專注於企劃、專案管理與問題拆解，保持叛逆，特立獨行。"
   />
-  <meta name="theme-color" content="#f74354" />
+  <meta name="theme-color" content="#07080b" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link rel="canonical" href="https://aboao.github.io/" />
 
   <meta property="og:title" content="王承皓 | Product Manager" />
@@ -28,7 +28,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Outfit:wght@400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;family=Outfit:wght@400;500;600;700;800&amp;display=swap"
     rel="stylesheet"
   />
   <link rel="stylesheet" href="assets/css/main.css" />
@@ -36,6 +36,11 @@
   <script type="module" src="assets/js/pwa.js"></script>
 </head>
 <body>
+  <div class="site-backdrop" aria-hidden="true">
+    <div class="backdrop-grid"></div>
+    <div class="backdrop-scan"></div>
+  </div>
+
   <header class="site-header">
     <div class="header-inner">
       <a class="brand" href="#hero" aria-label="回到首頁">
@@ -56,104 +61,152 @@
       <nav id="site-nav" class="site-nav" aria-label="主選單">
         <a href="#hero">Home</a>
         <a href="#info">Info</a>
+        <a href="#capabilities">Capability</a>
         <a href="#work">Work</a>
+        <a href="#notes">Notes</a>
         <a href="#contact">Contact</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <section id="hero" class="section hero-section">
-      <div class="hero-copy">
-        <p class="eyebrow">Product Manager / Puzzle Solver / Rebellious Mindset</p>
-        <h1>王承皓</h1>
-        <p class="hero-text">
-          來自台灣的經理人，專注於增強自己在各種領域的技能。<br />
-          每天提醒自己「保持叛逆，特立獨行」。
-        </p>
-        <ul class="hero-tags" aria-label="個人標籤">
-          <li>Planning</li>
-          <li>Project Management</li>
-          <li>Puzzle Thinking</li>
-        </ul>
-        <a class="scroll-indicator" href="#info" aria-label="往下滑查看關於我">
-          <span class="scroll-indicator-label">Scroll Down</span>
-          <span class="scroll-indicator-arrow" aria-hidden="true"></span>
-        </a>
+    <section id="hero" class="section hero-section" data-section>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow" data-reveal>Product Manager / Puzzle Solver / Rebellious Mindset</p>
+          <h1 data-reveal>王承皓</h1>
+          <p class="hero-text" data-reveal>
+            來自台灣的經理人，專注於增強自己在各種領域的技能。<br />
+            每天提醒自己「保持叛逆，特立獨行」。
+          </p>
+          <ul class="hero-tags" aria-label="個人標籤" data-reveal>
+            <li>Planning</li>
+            <li>Project Management</li>
+            <li>Puzzle Thinking</li>
+          </ul>
+          <div class="hero-actions" data-reveal>
+            <a class="button primary" href="#work">Explore Work</a>
+            <a class="button secondary" href="#contact">Contact Me</a>
+          </div>
+        </div>
+
+        <div class="hero-visual tilt-card" data-reveal data-depth="0.08">
+          <div class="portrait-panel">
+            <div class="portrait-frame">
+              <img src="images/王承皓.jpg" alt="王承皓" />
+            </div>
+            <div class="signal-panel" aria-hidden="true">
+              <span class="signal-label">ABAO</span>
+              <strong>Keep rebellious,<br />be maverick.</strong>
+              <div class="signal-meter">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="hero-visual">
-        <div class="portrait-card">
-          <img src="images/王承皓.jpg" alt="王承皓" />
-        </div>
-        <div class="hero-badge">
-          <span>ABAO</span>
-          <strong>Keep rebellious,<br />be maverick.</strong>
-        </div>
-      </div>
+      <a class="scroll-indicator" href="#info" aria-label="往下滑查看關於我">
+        <span class="scroll-indicator-label">Scroll Down</span>
+        <span class="scroll-indicator-line" aria-hidden="true"></span>
+      </a>
     </section>
 
-    <section id="info" class="section">
+    <section id="info" class="section" data-section>
       <div class="section-shell">
-        <div class="section-heading">
+        <div class="section-heading" data-reveal>
           <p class="eyebrow">Info</p>
           <h2>Who am I</h2>
+          <p>基本資料保留原始內容，重新整理成更清楚的資料層級。</p>
         </div>
 
-        <div class="info-grid">
-          <article class="panel-card">
-            <h3>Basic Profile</h3>
-            <ul class="detail-list">
-              <li><span>姓名</span><strong>王承皓</strong></li>
-              <li><span>Name</span><strong>Wang Chen Hao</strong></li>
-              <li><span>綽號</span><strong>阿寶</strong></li>
-              <li><span>AKA</span><strong>ABAO</strong></li>
-            </ul>
+        <div class="info-layout">
+          <article class="statement-card glass-card" data-reveal>
+            <p>
+              來自台灣的經理人，專注於增強自己在各種領域的技能。<br />
+              Manager from Taiwan, focusing on enhancing his skills in various fields.
+            </p>
+            <p>
+              他每天都會提醒自己「保持叛逆，特立獨行」。<br />
+              He reminds himself every day to "Keep rebellious, be maverick".
+            </p>
           </article>
 
-          <article class="panel-card">
-            <h3>Base Data</h3>
-            <ul class="detail-list">
-              <li><span>生日</span><strong>1994.11.02</strong></li>
-              <li><span>性別</span><strong>男</strong></li>
-              <li><span>興趣</span><strong>推理、解謎</strong></li>
-              <li><span>技能</span><strong>企劃、專案管理</strong></li>
-            </ul>
-          </article>
+          <div class="profile-grid">
+            <article class="panel-card glass-card" data-reveal>
+              <h3>Basic Profile</h3>
+              <ul class="detail-list">
+                <li><span>姓名</span><strong>王承皓</strong></li>
+                <li><span>Name</span><strong>Wang Chen Hao</strong></li>
+                <li><span>綽號</span><strong>阿寶</strong></li>
+                <li><span>AKA</span><strong>ABAO</strong></li>
+              </ul>
+            </article>
+
+            <article class="panel-card glass-card" data-reveal>
+              <h3>Base Data</h3>
+              <ul class="detail-list">
+                <li><span>生日</span><strong>1994.11.02</strong></li>
+                <li><span>性別</span><strong>男</strong></li>
+                <li><span>興趣</span><strong>推理、解謎</strong></li>
+                <li><span>技能</span><strong>企劃、專案管理</strong></li>
+              </ul>
+            </article>
+          </div>
         </div>
-
-        <article class="statement-card">
-          <p>
-            來自台灣的經理人，專注於增強自己在各種領域的技能。<br />
-            Manager from Taiwan, focusing on enhancing his skills in various fields.
-          </p>
-          <p>
-            他每天都會提醒自己「保持叛逆，特立獨行」。<br />
-            He reminds himself every day to "Keep rebellious, be maverick".
-          </p>
-        </article>
       </div>
     </section>
 
-    <section id="work" class="section work-section">
+    <section id="capabilities" class="section capability-section" data-section>
       <div class="section-shell">
-        <div class="section-heading">
-          <p class="eyebrow">Work</p>
-          <h2>Experience Timeline</h2>
+        <div class="section-heading" data-reveal>
+          <p class="eyebrow">Capabilities</p>
+          <h2>Problem systems, not just tasks.</h2>
+          <p>把原本的技能與興趣拆成可延伸的能力模組，之後也能加進更多作品或方法論。</p>
         </div>
 
-        <div class="timeline">
-          <article class="timeline-item">
+        <div class="capability-grid">
+          <article class="capability-card glass-card" data-reveal>
+            <span>01</span>
+            <h3>企劃</h3>
+            <p>把目標、限制與使用者情境拆開，整理成可以前進的產品方向。</p>
+          </article>
+          <article class="capability-card glass-card" data-reveal>
+            <span>02</span>
+            <h3>專案管理</h3>
+            <p>用節奏、優先級與溝通機制，讓複雜任務保持推進。</p>
+          </article>
+          <article class="capability-card glass-card" data-reveal>
+            <span>03</span>
+            <h3>推理與解謎</h3>
+            <p>從細節觀察與邏輯推理出發，尋找問題背後真正的結構。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="work" class="section work-section" data-section>
+      <div class="section-shell">
+        <div class="section-heading" data-reveal>
+          <p class="eyebrow">Work</p>
+          <h2>Experience Showcase</h2>
+          <p>將原本 timeline 改成展示式卡片，保留時間與說明文字，讓每段經歷更像作品案例。</p>
+        </div>
+
+        <div class="showcase-grid">
+          <article class="work-card glass-card tilt-card" data-reveal>
             <p class="timeline-date">Now</p>
-            <div class="timeline-content">
+            <div>
               <h3>Triple-i</h3>
               <p>將科技帶入保險產，提供更好的溝通平台。將理財帶入生活，提供更簡單的計算工具。</p>
             </div>
           </article>
 
-          <article class="timeline-item">
+          <article class="work-card glass-card tilt-card" data-reveal>
             <p class="timeline-date">2018 / 11</p>
-            <div class="timeline-content">
+            <div>
               <h3>Speed Drifters</h3>
               <p>
                 2019 年度最佳遊戲。是一款簡單上手、操作手感絕佳的賽車遊戲，不但開啟了台灣的賽車遊戲市場，至今依然活耀於排行榜。
@@ -161,9 +214,9 @@
             </div>
           </article>
 
-          <article class="timeline-item">
+          <article class="work-card glass-card tilt-card" data-reveal>
             <p class="timeline-date">2018 / 02</p>
-            <div class="timeline-content">
+            <div>
               <h3>Gash</h3>
               <p>台港首選數位娛樂服務平台，提供網路金流、線上遊戲資訊。</p>
             </div>
@@ -172,17 +225,39 @@
       </div>
     </section>
 
-    <section id="contact" class="section contact-section">
-      <div class="section-shell section-shell-contrast">
-        <div class="section-heading">
+    <section id="notes" class="section notes-section" data-section>
+      <div class="section-shell">
+        <div class="section-heading" data-reveal>
+          <p class="eyebrow">Notes</p>
+          <h2>Articles / Field Notes</h2>
+          <p>保留現有文章入口，之後可以在這裡擴充更多產品、解謎與專案管理筆記。</p>
+        </div>
+
+        <article class="note-card glass-card tilt-card" data-reveal>
+          <div>
+            <p class="timeline-date">2025 / 04</p>
+            <h3>為什麼我喜歡解謎</h3>
+            <p>
+              從邏輯遊戲、解謎遊戲、密室逃脫，到產品經理與企劃設計所需的拆解能力。
+            </p>
+          </div>
+          <a class="button secondary" href="articles/puzzle-love.html">Read Note</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="section contact-section" data-section>
+      <div class="section-shell">
+        <div class="section-heading" data-reveal>
           <p class="eyebrow">Contact</p>
           <h2>Contact Me</h2>
+          <p>如果你想聊產品、專案、合作，或只是想交流一個有趣的想法，都可以直接留言給我。</p>
         </div>
 
         <div class="contact-layout">
-          <article class="contact-copy panel-card">
-            <h3>Let&apos;s talk</h3>
-            <p>如果你想聊產品、專案、合作，或只是想交流一個有趣的想法，都可以直接留言給我。</p>
+          <article class="contact-copy glass-card" data-reveal>
+            <h3>Let's talk</h3>
+            <p>把想法丟進訊號裡，我會在收到後回覆。</p>
             <div class="social-links" aria-label="社群連結">
               <a href="https://www.facebook.com/wang.c.hao.9" target="_blank" rel="noreferrer" aria-label="Facebook">
                 <i class="fa-brands fa-facebook-f"></i>
@@ -196,7 +271,7 @@
             </div>
           </article>
 
-          <div class="panel-card form-card">
+          <div class="form-card glass-card" data-reveal>
             <iframe
               name="hidden_iframe"
               id="hidden_iframe"
@@ -248,6 +323,3 @@
   <script src="assets/js/effects.js"></script>
 </body>
 </html>
-
-
-

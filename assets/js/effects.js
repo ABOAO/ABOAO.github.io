@@ -1,361 +1,253 @@
-/**
- * effects.js — Lusion-inspired interactive effects
- * Scroll snap (卡點), particles, custom cursor, grain overlay,
- * text character reveal, magnetic hover, scroll progress indicator.
- */
 (function () {
-  'use strict';
+  "use strict";
 
-  const q = (sel) => document.querySelector(sel);
-  const qa = (sel) => Array.from(document.querySelectorAll(sel));
-  const isFine = () => window.matchMedia('(pointer: fine)').matches;
+  const qs = (selector, root = document) => root.querySelector(selector);
+  const qsa = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const finePointer = window.matchMedia("(pointer: fine)");
 
-  /* ============================================================
-   * 1. LENIS SMOOTH SCROLL
-   *    Momentum / inertia scrolling — gives the page a sense of
-   *    physical weight (inspired by lusion.co).
-   *    lerp 0.075 = heavy, cinematic feel.
-   * ============================================================ */
+  const canAnimate = () => !reduceMotion.matches;
+
   function initLenis() {
-    if (typeof Lenis === 'undefined') return;
+    if (!canAnimate() || typeof Lenis === "undefined") return;
 
     const lenis = new Lenis({
-      lerp: 0.075,          // lower = more inertia / heavier feel
-      wheelMultiplier: 0.9, // slightly softer wheel response
+      lerp: 0.09,
+      wheelMultiplier: 0.85,
       smoothWheel: true,
-      syncTouch: false,     // keep native touch scrolling on mobile
+      syncTouch: false,
     });
 
-    // Expose globally so main.js can call lenis.scrollTo()
     window.__lenis = lenis;
 
-    // Drive Lenis with requestAnimationFrame
-    function raf(time) {
+    const raf = (time) => {
       lenis.raf(time);
       requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
+    };
 
-    // Keep Lenis in sync with hash-change navigation
-    window.addEventListener('hashchange', () => {
-      const el = document.querySelector(window.location.hash);
-      if (el) lenis.scrollTo(el, { offset: -88, duration: 1.4 });
-    });
+    requestAnimationFrame(raf);
   }
 
-  /* ============================================================
-   * 2. SCROLL PROGRESS INDICATOR (side dots)
-   * ============================================================ */
-  function initScrollProgress() {
-    const sections = qa('.section');
-    if (sections.length === 0) return;
-
-    const container = document.createElement('nav');
-    container.className = 'fx-scroll-progress';
-    container.setAttribute('aria-hidden', 'true');
-
-    const dots = sections.map((_, i) => {
-      const d = document.createElement('span');
-      d.className = 'fx-scroll-progress-dot';
-      if (i === 0) d.classList.add('active');
-      container.appendChild(d);
-      return d;
-    });
-
-    document.body.appendChild(container);
-
-    const hdr = () => q('.site-header')?.offsetHeight || 88;
+  function initProgress() {
+    const progress = document.createElement("div");
+    progress.className = "fx-progress";
+    progress.setAttribute("aria-hidden", "true");
+    progress.innerHTML = "<span></span>";
+    document.body.append(progress);
 
     const update = () => {
-      const threshold = window.scrollY + hdr() + window.innerHeight * 0.4;
-      let activeIdx = 0;
-      sections.forEach((s, i) => {
-        if (s.getBoundingClientRect().top + window.scrollY <= threshold) activeIdx = i;
-      });
-      dots.forEach((d, i) => d.classList.toggle('active', i === activeIdx));
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const value = max > 0 ? window.scrollY / max : 0;
+      progress.style.setProperty("--progress", Math.min(Math.max(value, 0), 1).toFixed(4));
     };
 
-    window.addEventListener('scroll', update, { passive: true });
     update();
+    document.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
   }
 
-  /* ============================================================
-   * 3. CANVAS PARTICLE NETWORK (ambient background, desktop only)
-   * ============================================================ */
-  function initParticles() {
-    if (!isFine()) return; // skip on touch devices
+  function initReveal() {
+    const targets = qsa("[data-reveal]");
 
-    const canvas = document.createElement('canvas');
-    canvas.className = 'fx-particles';
-    document.body.prepend(canvas);
-
-    const ctx = canvas.getContext('2d');
-    const N = 55;
-    const LINK = 130;
-    let W, H;
-    const mouse = { x: -9999, y: -9999 };
-    let pts = [];
-
-    const resize = () => {
-      W = canvas.width = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-    };
-
-    const mkPt = () => ({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      vx: (Math.random() - 0.5) * 0.38,
-      vy: (Math.random() - 0.5) * 0.38,
-      r: Math.random() * 1.8 + 0.7,
+    targets.forEach((target, index) => {
+      const group = target.closest("[data-section]");
+      const groupTargets = group ? qsa("[data-reveal]", group) : targets;
+      const delayIndex = Math.max(groupTargets.indexOf(target), index === 0 ? 0 : 1);
+      target.style.setProperty("--reveal-delay", `${Math.min(delayIndex * 0.08, 0.42)}s`);
     });
 
-    const frame = () => {
-      requestAnimationFrame(frame);
-      ctx.clearRect(0, 0, W, H);
-
-      // Draw connection lines
-      for (let i = 0; i < pts.length; i++) {
-        for (let j = i + 1; j < pts.length; j++) {
-          const dx = pts[i].x - pts[j].x;
-          const dy = pts[i].y - pts[j].y;
-          const d = Math.hypot(dx, dy);
-          if (d < LINK) {
-            ctx.beginPath();
-            ctx.moveTo(pts[i].x, pts[i].y);
-            ctx.lineTo(pts[j].x, pts[j].y);
-            ctx.strokeStyle = `rgba(100,140,185,${(1 - d / LINK) * 0.13})`;
-            ctx.lineWidth = 0.8;
-            ctx.stroke();
-          }
-        }
-      }
-
-      // Update and draw dots
-      pts.forEach((p) => {
-        // Mouse repulsion
-        const dx = p.x - mouse.x;
-        const dy = p.y - mouse.y;
-        const d = Math.hypot(dx, dy);
-        if (d < 100 && d > 0) {
-          const f = ((100 - d) / 100) * 1.4;
-          p.x += (dx / d) * f;
-          p.y += (dy / d) * f;
-        }
-
-        // Move and wrap
-        p.x = (p.x + p.vx + W) % W;
-        p.y = (p.y + p.vy + H) % H;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(100,140,185,0.22)';
-        ctx.fill();
-      });
-    };
-
-    window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
-    window.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
-    window.addEventListener('resize', resize);
-
-    resize();
-    pts = Array.from({ length: N }, mkPt);
-    frame();
-  }
-
-  /* ============================================================
-   * 4. GRAIN OVERLAY (noise texture, generated via canvas)
-   * ============================================================ */
-  function initGrain() {
-    // Generate a random noise texture once
-    const size = 200;
-    const offscreen = document.createElement('canvas');
-    offscreen.width = size;
-    offscreen.height = size;
-    const ctx = offscreen.getContext('2d');
-    const id = ctx.createImageData(size, size);
-    const d = id.data;
-    for (let i = 0; i < d.length; i += 4) {
-      const v = (Math.random() * 255) | 0;
-      d[i] = d[i + 1] = d[i + 2] = v;
-      d[i + 3] = 255;
-    }
-    ctx.putImageData(id, 0, 0);
-
-    const el = document.createElement('div');
-    el.className = 'fx-grain';
-    el.style.backgroundImage = `url(${offscreen.toDataURL()})`;
-    document.body.appendChild(el);
-  }
-
-  /* ============================================================
-   * 5. CUSTOM CURSOR with spring physics (desktop only)
-   * ============================================================ */
-  function initCursor() {
-    if (!isFine()) return;
-
-    const ring = document.createElement('div');
-    ring.className = 'fx-cursor-ring';
-    const dot = document.createElement('div');
-    dot.className = 'fx-cursor-dot';
-    document.body.append(ring, dot);
-    document.body.classList.add('has-cursor');
-
-    let mx = window.innerWidth / 2;
-    let my = window.innerHeight / 2;
-    let rx = mx, ry = my;
-
-    document.addEventListener('mousemove', (e) => {
-      mx = e.clientX;
-      my = e.clientY;
-      dot.style.transform = `translate(${mx}px, ${my}px)`;
-
-      // Reveal on first move
-      if (!ring.classList.contains('visible')) {
-        ring.classList.add('visible');
-        dot.classList.add('visible');
-      }
-    });
-
-    document.addEventListener('mouseleave', () => {
-      ring.classList.remove('visible');
-      dot.classList.remove('visible');
-    });
-
-    document.addEventListener('mouseenter', () => {
-      ring.classList.add('visible');
-      dot.classList.add('visible');
-    });
-
-    // Spring animation for ring
-    (function animateRing() {
-      rx += (mx - rx) * 0.1;
-      ry += (my - ry) * 0.1;
-      ring.style.transform = `translate(${rx}px, ${ry}px)`;
-      requestAnimationFrame(animateRing);
-    })();
-
-    // Expand ring on interactive elements
-    qa('a, button, input, textarea, label').forEach((el) => {
-      el.addEventListener('mouseenter', () => ring.classList.add('big'));
-      el.addEventListener('mouseleave', () => ring.classList.remove('big'));
-    });
-  }
-
-  /* ============================================================
-   * 6. TEXT CHARACTER REVEAL (h1, h2 headings)
-   * ============================================================ */
-  function initTextReveal() {
-    const headings = qa('.hero-copy h1, .section-heading h2');
-
-    headings.forEach((el) => {
-      const chars = [...el.textContent].map((ch, i) => {
-        const s = document.createElement('span');
-        s.className = 'ch';
-        s.style.setProperty('--i', i);
-        s.textContent = ch === ' ' ? '\u00a0' : ch;
-        return s;
-      });
-      el.replaceChildren(...chars);
-    });
-
-    if (!('IntersectionObserver' in window)) {
-      headings.forEach((el) => el.classList.add('chars-in'));
+    if (!("IntersectionObserver" in window) || !canAnimate()) {
+      targets.forEach((target) => target.classList.add("is-visible"));
+      document.body.classList.add("is-loaded");
       return;
     }
 
-    // Trigger reveal when the heading is well into the viewport
-    const obs = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('chars-in');
-            obs.unobserve(entry.target);
-          }
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
         });
       },
-      { threshold: 0.5 }
+      {
+        threshold: 0.16,
+        rootMargin: "0px 0px -8% 0px",
+      }
     );
 
-    headings.forEach((el) => obs.observe(el));
+    targets.forEach((target) => observer.observe(target));
+
+    requestAnimationFrame(() => {
+      document.body.classList.add("is-loaded");
+      qsa(".hero-section [data-reveal]").forEach((target) => target.classList.add("is-visible"));
+    });
   }
 
-  /* ============================================================
-   * 7. MAGNETIC HOVER (buttons and social links)
-   * ============================================================ */
-  function initMagnetic() {
-    if (!isFine()) return;
+  function initParticles() {
+    if (!canAnimate() || !finePointer.matches || window.innerWidth < 860) return;
 
-    qa('.button, .social-links a, .scroll-indicator').forEach((el) => {
-      el.addEventListener('mousemove', (e) => {
-        const r = el.getBoundingClientRect();
-        const cx = r.left + r.width / 2;
-        const cy = r.top + r.height / 2;
-        el.style.transform = `translate(${(e.clientX - cx) * 0.22}px, ${(e.clientY - cy) * 0.22}px)`;
+    const canvas = document.createElement("canvas");
+    canvas.className = "fx-particles";
+    canvas.setAttribute("aria-hidden", "true");
+    document.body.prepend(canvas);
+
+    const ctx = canvas.getContext("2d");
+    const pointer = { x: -9999, y: -9999 };
+    const particleCount = 46;
+    const linkDistance = 150;
+    let width = 0;
+    let height = 0;
+    let ratio = 1;
+    let particles = [];
+    let running = true;
+
+    const makeParticle = () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.28,
+      vy: (Math.random() - 0.5) * 0.28,
+      r: Math.random() * 1.4 + 0.6,
+    });
+
+    const resize = () => {
+      ratio = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.floor(width * ratio);
+      canvas.height = Math.floor(height * ratio);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      particles = Array.from({ length: particleCount }, makeParticle);
+    };
+
+    const draw = () => {
+      if (!running) {
+        requestAnimationFrame(draw);
+        return;
+      }
+
+      ctx.clearRect(0, 0, width, height);
+
+      particles.forEach((particle, index) => {
+        for (let i = index + 1; i < particles.length; i += 1) {
+          const peer = particles[i];
+          const dx = particle.x - peer.x;
+          const dy = particle.y - peer.y;
+          const distance = Math.hypot(dx, dy);
+
+          if (distance < linkDistance) {
+            const opacity = (1 - distance / linkDistance) * 0.16;
+            ctx.beginPath();
+            ctx.moveTo(particle.x, particle.y);
+            ctx.lineTo(peer.x, peer.y);
+            ctx.strokeStyle = `rgba(95, 243, 255, ${opacity})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
       });
-      el.addEventListener('mouseleave', () => {
-        el.style.transform = '';
-        el.style.transition = 'transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)';
-        setTimeout(() => { el.style.transition = ''; }, 350);
+
+      particles.forEach((particle) => {
+        const dx = particle.x - pointer.x;
+        const dy = particle.y - pointer.y;
+        const distance = Math.hypot(dx, dy);
+
+        if (distance < 120 && distance > 0) {
+          const force = ((120 - distance) / 120) * 1.2;
+          particle.x += (dx / distance) * force;
+          particle.y += (dy / distance) * force;
+        }
+
+        particle.x = (particle.x + particle.vx + width) % width;
+        particle.y = (particle.y + particle.vy + height) % height;
+
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(152, 255, 99, 0.42)";
+        ctx.fill();
+      });
+
+      requestAnimationFrame(draw);
+    };
+
+    window.addEventListener("mousemove", (event) => {
+      pointer.x = event.clientX;
+      pointer.y = event.clientY;
+    });
+    window.addEventListener("mouseleave", () => {
+      pointer.x = -9999;
+      pointer.y = -9999;
+    });
+    window.addEventListener("resize", resize);
+    document.addEventListener("visibilitychange", () => {
+      running = !document.hidden;
+    });
+
+    resize();
+    requestAnimationFrame(draw);
+  }
+
+  function initTilt() {
+    if (!canAnimate() || !finePointer.matches) return;
+
+    qsa(".tilt-card").forEach((card) => {
+      card.addEventListener("mousemove", (event) => {
+        const rect = card.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width - 0.5;
+        const y = (event.clientY - rect.top) / rect.height - 0.5;
+        const depth = card.dataset.depth ? Number(card.dataset.depth) * window.scrollY : 0;
+
+        card.style.transform = `translate3d(0, ${depth}px, 0) perspective(900px) rotateX(${y * -5}deg) rotateY(${x * 6}deg) translateY(-3px)`;
+      });
+
+      card.addEventListener("mouseleave", () => {
+        const depth = card.dataset.depth ? Number(card.dataset.depth) * window.scrollY : 0;
+        card.style.transform = card.dataset.depth ? `translate3d(0, ${depth}px, 0)` : "";
       });
     });
   }
 
-  /* ============================================================
-   * 8. HERO VISUAL PARALLAX on scroll
-   * ============================================================ */
   function initParallax() {
-    const visual = q('.hero-visual');
-    if (!visual) return;
+    const depthTargets = qsa("[data-depth]");
+    if (!canAnimate() || !depthTargets.length) return;
 
-    // Switch from CSS float animation to JS parallax
-    visual.classList.add('has-parallax');
+    let ticking = false;
 
-    window.addEventListener(
-      'scroll',
-      () => {
-        const y = window.scrollY;
-        visual.style.transform = `translateY(${y * 0.06}px)`;
-      },
-      { passive: true }
-    );
+    const update = () => {
+      const scrollY = window.scrollY;
+      depthTargets.forEach((target) => {
+        if (target.matches(":hover") && finePointer.matches) return;
+        const depth = Number(target.dataset.depth || 0);
+        target.style.transform = `translate3d(0, ${scrollY * depth}px, 0)`;
+      });
+      ticking = false;
+    };
+
+    const requestUpdate = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+
+    update();
+    document.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
   }
 
-  /* ============================================================
-   * 9. CARD STAGGER DELAYS — assign CSS custom property per card
-   * ============================================================ */
-  function initStagger() {
-    // Info grid panels
-    qa('.info-grid .panel-card').forEach((el, i) => {
-      el.style.setProperty('--stagger-delay', `${0.12 + i * 0.12}s`);
-    });
-    // Statement card
-    const stmt = q('.statement-card');
-    if (stmt) stmt.style.setProperty('--stagger-delay', '0.35s');
-
-    // Timeline items
-    qa('.timeline-item').forEach((el, i) => {
-      el.style.setProperty('--stagger-delay', `${0.1 + i * 0.14}s`);
-    });
-  }
-
-  /* ============================================================
-   * BOOT
-   * ============================================================ */
   function boot() {
-    initGrain();
-    initCursor();
-    initParticles();
-    initScrollProgress();
     initLenis();
-    initTextReveal();
-    initMagnetic();
+    initProgress();
+    initReveal();
+    initParticles();
+    initTilt();
     initParallax();
-    initStagger();
   }
 
-  if (document.readyState !== 'loading') {
-    boot();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
   } else {
-    document.addEventListener('DOMContentLoaded', boot);
+    boot();
   }
 })();

@@ -1,4 +1,4 @@
-const CACHE_NAME = "aboao-site-v1";
+const CACHE_NAME = "aboao-site-v2";
 const OFFLINE_URL = "/offline.html";
 const PRECACHE_URLS = [
   "/",
@@ -7,6 +7,7 @@ const PRECACHE_URLS = [
   "/manifest.json",
   "/assets/css/main.css",
   "/assets/js/main.js",
+  "/assets/js/effects.js",
   "/assets/js/pwa.js",
   "/articles/puzzle-love.html",
   "/images/A.ico",
