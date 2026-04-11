@@ -31,13 +31,13 @@
 
 html {
   scroll-padding-top: var(--header-height);
-  overflow-x: clip;
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
   min-width: 320px;
-  overflow-x: clip;
+  overflow-x: hidden;
   font-family: "Noto Sans TC", sans-serif;
   color: var(--text);
   background:
@@ -1001,6 +1001,11 @@ main {
 }
 
 [data-reveal] {
+  opacity: 1;
+  transform: none;
+}
+
+html.reveal-ready [data-reveal] {
   opacity: 0;
   transform: translateY(24px) scale(0.98);
   transition:
@@ -1010,7 +1015,7 @@ main {
   will-change: opacity, transform;
 }
 
-[data-reveal].is-visible {
+html.reveal-ready [data-reveal].is-visible {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
@@ -1120,10 +1125,23 @@ body.is-loaded .hero-section [data-reveal] {
 
   .header-inner {
     min-height: var(--header-height);
+    gap: 12px;
+  }
+
+  .brand {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .brand img {
+    width: min(160px, 42vw);
+    height: auto;
+    max-height: 34px;
   }
 
   .nav-toggle {
     display: inline-flex;
+    flex: 0 0 auto;
   }
 
   .site-nav {
@@ -1134,7 +1152,10 @@ body.is-loaded .hero-section [data-reveal] {
     display: grid;
     gap: 4px;
     padding: 8px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
     background: rgba(8, 10, 13, 0.96);
+    box-shadow: var(--shadow);
     opacity: 0;
     pointer-events: none;
     transform: translateY(-8px);
@@ -1159,17 +1180,17 @@ body.is-loaded .hero-section [data-reveal] {
 
   .hero-section {
     min-height: auto;
-    padding: 36px 0 104px;
+    padding: 28px 0 72px;
   }
 
   .hero-grid {
-    gap: 34px;
+    gap: 24px;
     min-width: 0;
   }
 
   .hero-copy {
     width: 100%;
-    max-width: calc(100vw - 32px);
+    max-width: 100%;
   }
 
   .eyebrow,
@@ -1183,6 +1204,8 @@ body.is-loaded .hero-section [data-reveal] {
 
   .hero-copy h1 {
     font-size: 3.5rem;
+    line-height: 0.92;
+    text-wrap: balance;
   }
 
   .hero-text {
@@ -1193,11 +1216,13 @@ body.is-loaded .hero-section [data-reveal] {
   .hero-actions {
     display: grid;
     grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .hero-tags {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: 8px;
   }
 
   .hero-tags li {
@@ -1211,6 +1236,7 @@ body.is-loaded .hero-section [data-reveal] {
 
   .portrait-panel {
     min-height: auto;
+    padding: 14px;
   }
 
   .portrait-frame,
@@ -1219,7 +1245,7 @@ body.is-loaded .hero-section [data-reveal] {
   }
 
   .scroll-indicator {
-    bottom: 24px;
+    display: none;
   }
 
   .section-heading {
@@ -1228,7 +1254,8 @@ body.is-loaded .hero-section [data-reveal] {
 
   .section-heading h2,
   .post h1 {
-    font-size: 2.35rem;
+    font-size: 2.2rem;
+    line-height: 1.05;
   }
 
   .profile-grid,
@@ -1252,6 +1279,7 @@ body.is-loaded .hero-section [data-reveal] {
   .note-card {
     display: grid;
     min-height: auto;
+    gap: 18px;
   }
 
   .note-card .button {
@@ -1266,17 +1294,23 @@ body.is-loaded .hero-section [data-reveal] {
     width: calc(100% - 32px);
     justify-content: center;
   }
+
+  .signal-panel {
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+  }
 }
 
 @media (max-width: 600px) {
   main,
   .header-inner,
   .container {
-    width: min(calc(100% - 32px), 358px);
+    width: calc(100% - 24px);
   }
 
   .brand img {
-    width: 142px;
+    width: 136px;
   }
 
   .eyebrow {
@@ -1286,7 +1320,7 @@ body.is-loaded .hero-section [data-reveal] {
   }
 
   .hero-copy h1 {
-    font-size: 2.55rem;
+    font-size: 2.35rem;
   }
 
   .hero-tags li {
@@ -1299,29 +1333,49 @@ body.is-loaded .hero-section [data-reveal] {
 }
 
 @media (max-width: 480px) {
+  .header-inner {
+    gap: 10px;
+  }
+
+  .nav-toggle {
+    width: 42px;
+    height: 42px;
+  }
+
   .portrait-frame,
   .portrait-frame img {
-    min-height: 340px;
+    min-height: 300px;
   }
 
   .signal-panel {
-    left: 26px;
-    right: 26px;
-    bottom: 26px;
-    padding: 14px;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    padding: 12px;
   }
 
   .section-heading h2,
   .post h1 {
-    font-size: 2rem;
+    font-size: 1.82rem;
+  }
+
+  .hero-copy h1 {
+    font-size: 2.1rem;
   }
 
   .detail-list li {
-    gap: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .detail-list span,
+  .detail-list strong {
+    text-align: left;
   }
 
   .detail-list strong {
-    max-width: 56%;
+    max-width: 100%;
   }
 }
 

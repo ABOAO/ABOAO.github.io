@@ -49,6 +49,11 @@
   function initReveal() {
     const targets = qsa("[data-reveal]");
 
+    if (!targets.length) {
+      document.body.classList.add("is-loaded");
+      return;
+    }
+
     targets.forEach((target, index) => {
       const group = target.closest("[data-section]");
       const groupTargets = group ? qsa("[data-reveal]", group) : targets;
@@ -61,6 +66,19 @@
       document.body.classList.add("is-loaded");
       return;
     }
+
+    const markVisibleTargets = () => {
+      const viewportBottom = window.innerHeight * 0.92;
+      targets.forEach((target) => {
+        const rect = target.getBoundingClientRect();
+        if (rect.top <= viewportBottom && rect.bottom >= 0) {
+          target.classList.add("is-visible");
+        }
+      });
+    };
+
+    markVisibleTargets();
+    document.documentElement.classList.add("reveal-ready");
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -76,11 +94,13 @@
       }
     );
 
-    targets.forEach((target) => observer.observe(target));
+    targets.forEach((target) => {
+      if (target.classList.contains("is-visible")) return;
+      observer.observe(target);
+    });
 
     requestAnimationFrame(() => {
       document.body.classList.add("is-loaded");
-      qsa(".hero-section [data-reveal]").forEach((target) => target.classList.add("is-visible"));
     });
   }
 
