@@ -142,7 +142,7 @@
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
             ctx.lineTo(peer.x, peer.y);
-            ctx.strokeStyle = `rgba(95, 243, 255, ${opacity})`;
+            ctx.strokeStyle = `rgba(0, 212, 255, ${opacity})`;
             ctx.lineWidth = 1;
             ctx.stroke();
           }
@@ -165,7 +165,7 @@
 
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(152, 255, 99, 0.42)";
+        ctx.fillStyle = "rgba(0, 212, 255, 0.42)";
         ctx.fill();
       });
 
