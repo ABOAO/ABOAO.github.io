@@ -1,75 +1,43 @@
 # 王承皓個人網站（ABOAO.github.io）
 
-這是我用來展示個人簡介與文章的單頁式網站，採用 HTML + CSS + JavaScript 打造，並配合 GitHub Pages 發佈。
+這個專案是部署在 GitHub Pages 的靜態個人網站，目前包含首頁、文章頁，以及一套簡單的 PWA 離線支援。
 
-## 🔧 技術棧
+## 技術組成
 
-- HTML5 / CSS / JavaScript (Vanilla)
-- PWA（Web App Manifest + Service Worker + Offline Cache）
-- Firebase Web SDK（Analytics 初始化）
-- Lenis + Vanilla JS 動畫（進場、視差、hover、scroll progress）
-- 單頁式設計（One Page Design）
-- 表單串接 Google Apps Script 作為聯絡方式
+- HTML + CSS + Vanilla JavaScript
+- Web App Manifest + Service Worker
+- Firebase Analytics 初始化
+- Google Apps Script 表單投遞
 
-## 📁 專案結構
+## 專案結構
 
 ```
+articles/
+  └── puzzle-love.html            # 文章頁
 assets/
   ├── css/
-  │   ├── main.css                # 目前主要維護的樣式入口
-  │   └── images/                 # 舊版背景圖（可清理）
-  ├── js/
-  │   ├── main.js                 # 導覽、錨點、表單互動
-  │   └── effects.js              # 動畫、進度條、粒子與視差效果
-  ├── sass/
-  │   ├── main.scss               # 舊版 SCSS（目前未作為主要樣式來源）
-  │   ├── libs/                   # 原本引用外部樣式，可清理
-  │   └── webfonts/               # 字體資源夾（如沒用可刪）
+  │   ├── index.css               # 首頁樣式
+  │   ├── main.css                # 文章頁樣式
+  │   └── images/
+  │       └── 網頁底圖.png         # 文章頁背景圖
+  └── js/
+      ├── index.js                # 首頁互動與視覺效果
+      └── pwa.js                  # service worker / Firebase 初始化
 images/
-  ├── 王承皓.jpg                   # 大頭貼
   ├── A.ico                       # favicon
-  ├── LOGO.svg / Footer image.svg # LOGO 與底圖（看使用情況）
-index.html                        # 網站首頁（單頁式）
+  ├── LOGO.svg                    # PWA icon
+  └── 王承皓.jpg                   # 首頁照片
+index.html                        # 首頁
 manifest.json                     # PWA manifest
 offline.html                      # 離線 fallback 頁
-service-worker.js                 # PWA 快取與離線支援
-README.md                         # 本說明文件
+service-worker.js                 # 離線快取設定
+README.md
 ```
 
-## 🚀 部署方式
+## 本機查看
 
-本網站以 GitHub Pages 發佈：  
-[https://aboao.github.io/](https://aboao.github.io/)
+這是純靜態網站，用任何能提供靜態檔案的本機伺服器都可以直接開啟。
 
-## UV 本機啟動
+## 線上網址
 
-這個專案目前是靜態網站，不需要額外的 Python 套件也能啟動。本地開發可直接使用：
-
-```bash
-uv sync
-uv run python -m http.server 8000
-```
-
-接著開啟 `http://localhost:8000`。
-
-如果之後要加入 Python 套件，使用：
-
-```bash
-uv add 套件名
-```
-
-例如：
-
-```bash
-uv add fastapi
-uv add --dev ruff
-```
-
-常用指令：
-
-```bash
-uv remove 套件名
-uv sync
-uv lock
-uv run python your_script.py
-```
+https://aboao.github.io/
