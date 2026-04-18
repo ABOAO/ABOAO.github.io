@@ -507,6 +507,12 @@ body::after{
 }
 .hero-lead b{color:var(--amber);font-weight:500}
 
+/* Hero left column */
+.hero-left{display:flex;flex-direction:column}
+.hero-left .term{flex:0 0 auto}
+.hero-left .syslog{flex:1 1 auto;display:flex;flex-direction:column;min-height:0}
+.hero-left .syslog-body{flex:1 1 auto;overflow:hidden}
+
 .hex{color:var(--dim);font-size:10px}
 
 /* ========== RWD ========== */
@@ -527,6 +533,8 @@ body::after{
     -webkit-overflow-scrolling:touch;scrollbar-width:none}
   .tb-nav::-webkit-scrollbar{display:none}
   .tb-nav a{flex:0 0 auto;font-size:11px;padding:5px 9px}
+  .hero-left{display:block}
+  .hero-left .syslog{flex:0 0 auto}
   .sec{padding:56px 0}
   .hero{padding-top:28px;padding-bottom:60px}
   .hero-lead{font-size:10px;letter-spacing:.18em}
@@ -648,7 +656,7 @@ body::after{
   <div class="hero-lead">&gt; initializing profile <b>...OK</b> &nbsp; · &nbsp; decrypting identity <b>...OK</b> &nbsp; · &nbsp; loading rebellion module <b>...OK</b></div>
 
   <div class="hero-grid">
-    <div>
+    <div class="hero-left">
       <div class="term">
         <div class="term-bar">
           <span class="tdot r"></span><span class="tdot y"></span><span class="tdot g"></span>
