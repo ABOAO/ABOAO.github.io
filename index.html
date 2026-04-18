@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>王承皓 | Product Manager</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ABAO // 王承皓 — product_manager.sys</title>
   <meta
     name="description"
     content="王承皓，來自台灣的產品經理，專注於企劃、專案管理與問題拆解，保持叛逆，特立獨行。"
   />
-  <meta name="theme-color" content="#07080b" />
+  <meta name="theme-color" content="#0a0d0a" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link rel="canonical" href="https://aboao.github.io/" />
 
-  <meta property="og:title" content="王承皓 | Product Manager" />
+  <meta property="og:title" content="ABAO // 王承皓 — product_manager.sys" />
   <meta
     property="og:description"
     content="來自台灣的經理人，專注於增強自己在各種領域的技能。"
@@ -25,308 +25,381 @@
   <link rel="icon" href="images/A.ico" type="image/x-icon" />
   <link rel="manifest" href="manifest.json" />
   <link rel="apple-touch-icon" href="images/A.ico" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;family=Outfit:wght@400;500;600;700;800&amp;display=swap"
-    rel="stylesheet"
-  />
-  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700;800&family=Space+Mono:wght@400;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="assets/css/index.css" />
   <script src="https://kit.fontawesome.com/b2a6aba1cf.js" crossorigin="anonymous"></script>
   <script type="module" src="assets/js/pwa.js"></script>
 </head>
 <body>
-  <div class="site-backdrop" aria-hidden="true">
-    <div class="backdrop-grid"></div>
-    <div class="backdrop-scan"></div>
+
+<canvas id="matrix"></canvas>
+
+<header class="topbar">
+  <div class="tb-inner">
+    <div class="tb-logo"><span class="dot"></span>ABAO<span style="color:var(--dim);font-weight:400"> ::</span><span style="color:var(--ink);font-weight:400"> wch.sys</span></div>
+    <nav class="tb-nav">
+      <a href="#hero">~/home</a>
+      <a href="#info">~/info</a>
+      <a href="#cap">~/capability</a>
+      <a href="#work">~/work</a>
+      <a href="#notes">~/notes</a>
+      <a href="#contact">~/contact</a>
+    </nav>
+    <div class="tb-sys">
+      <span>UP <b>1994d</b></span>
+      <span>LOC <b>TW</b></span>
+      <span id="clock"><b>--:--:--</b></span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- HERO -->
+<section class="sec hero" id="hero">
+  <div class="hero-lead">&gt; initializing profile <b>...OK</b> &nbsp; · &nbsp; decrypting identity <b>...OK</b> &nbsp; · &nbsp; loading rebellion module <b>...OK</b></div>
+
+  <div class="hero-grid">
+    <div class="hero-left">
+      <div class="term">
+        <div class="term-bar">
+          <span class="tdot r"></span><span class="tdot y"></span><span class="tdot g"></span>
+          <span class="title">abao@wch — <b>./whoami.sh</b> — 80×24</span>
+          <span class="right">zsh · v5.9</span>
+        </div>
+        <div class="term-body">
+          <div class="prompt">whoami --verbose</div>
+          <div class="cmt">resolving handle → decrypting...</div>
+          <div class="out">
+            <div class="hero-title"><span class="glitch" data-text="王承皓">王承皓</span></div>
+            <div style="color:var(--dim);font-size:12px;letter-spacing:.2em;margin-top:8px">
+              WANG CHEN HAO <span style="color:var(--mute)">/</span> <span style="color:var(--green)">ABAO</span>
+            </div>
+          </div>
+
+          <div class="prompt">cat ./manifesto.txt</div>
+          <div class="out">
+            <p class="hero-sub" style="margin-top:4px">
+              來自台灣的<span class="acc">經理人</span>，專注於增強自己在各種領域的技能。<br>
+              每天提醒自己「<span class="acc">保持叛逆，特立獨行</span>」。<span class="caret"></span>
+            </p>
+          </div>
+
+          <div class="prompt">ls ./roles/</div>
+          <div class="out chips" style="padding-top:6px">
+            <span class="chip">product_manager</span>
+            <span class="chip">puzzle_solver</span>
+            <span class="chip">rebellious_mindset</span>
+          </div>
+
+          <div class="prompt" style="margin-top:12px">./execute</div>
+          <div class="cta-row">
+            <a class="btn" href="#work">explore_work</a>
+            <a class="btn ghost" href="#contact">open_channel</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="syslog">
+        <div class="syslog-head">
+          <span>sys.log <span style="color:var(--mute)">//</span> <b>live_tail</b></span>
+          <span class="syslog-meta"><span class="dot"></span> streaming</span>
+        </div>
+        <ul class="syslog-body" id="syslogBody">
+          <li><span class="t">00:00:01</span><span class="lv ok">OK</span><span class="msg">kernel loaded · <b>rebellion.mod</b></span></li>
+          <li><span class="t">00:00:02</span><span class="lv ok">OK</span><span class="msg">mounting /skills → planning, pm, puzzle</span></li>
+          <li><span class="t">00:00:04</span><span class="lv ok">OK</span><span class="msg">tz set <b>UTC+08</b> · loc <b>TAIPEI.TW</b></span></li>
+          <li><span class="t">00:00:07</span><span class="lv warn">WARN</span><span class="msg">conformity daemon terminated</span></li>
+          <li><span class="t">00:00:09</span><span class="lv ok">OK</span><span class="msg">maverick mode <b>enabled</b></span></li>
+          <li><span class="t">00:00:12</span><span class="lv info">INFO</span><span class="msg">listening for interesting problems…<span class="caret" style="height:10px"></span></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ID CARD -->
+    <aside class="idcard">
+      <div class="idcard-head">
+        <span>ID_CARD <span style="color:var(--mute)">/</span> <b>0xA8A0</b></span>
+        <span>AUTH <b style="color:var(--green)">VERIFIED</b></span>
+      </div>
+      <div class="portrait">
+        <img class="portrait-img" src="images/王承皓.jpg" alt="王承皓">
+        <img class="portrait-img g1" src="images/王承皓.jpg" alt="" aria-hidden="true">
+        <img class="portrait-img g2" src="images/王承皓.jpg" alt="" aria-hidden="true">
+        <div class="portrait-noise"></div>
+        <div class="portrait-scan"></div>
+        <div class="portrait-sweep"></div>
+        <div class="portrait-overlay"></div>
+
+        <div class="portrait-hud tl">REC <span class="blink">●</span><br><span class="dim">04:32:17</span></div>
+        <div class="portrait-hud tr">SUBJ_0x01<br><span class="dim">ID A8A0</span></div>
+
+        <div class="portrait-hud bl">TRK <span style="color:var(--amber)">LOCKED</span><br><span class="dim">σ 0.002</span></div>
+        <div class="portrait-hud br">MATCH 99.7%<br><span class="dim">MASK_PATTERN</span></div>
+
+        <span class="portrait-corner tl"></span>
+        <span class="portrait-corner tr"></span>
+        <span class="portrait-corner bl"></span>
+        <span class="portrait-corner br"></span>
+        <div class="portrait-label">
+          SUBJ_0x01 <span class="blink">█</span> SCANNING <span class="dim" style="color:var(--dim);margin-left:6px">v.maverick</span>
+        </div>
+      </div>
+      <div class="idcard-body">
+        <span class="k">alias</span><span class="v">ABAO / 阿寶</span>
+        <span class="k">role</span><span class="v">Product Manager</span>
+        <span class="k">origin</span><span class="v">Taiwan</span>
+        <span class="k">mantra</span><span class="v" style="color:var(--green)">keep_rebellious()</span>
+        <span class="k">hash</span><span class="v hex">0x7A6B · 1F4A · D902</span>
+      </div>
+      <div class="idcard-foot">
+        <span>ISSUED <b>2018.02</b></span>
+        <span>EXP <b>∞</b></span>
+      </div>
+    </aside>
   </div>
 
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="brand" href="#hero" aria-label="回到首頁">
-        <img src="images/LOGO.svg" alt="ABAO Logo" width="200" height="49" decoding="async" />
-      </a>
-
-      <button
-        class="nav-toggle"
-        type="button"
-        aria-expanded="false"
-        aria-controls="site-nav"
-        aria-label="切換選單"
-      >
-        <span></span>
-        <span></span>
-      </button>
-
-      <nav id="site-nav" class="site-nav" aria-label="主選單">
-        <a href="#hero">Home</a>
-        <a href="#info">Info</a>
-        <a href="#capabilities">Capability</a>
-        <a href="#work">Work</a>
-        <a href="#notes">Notes</a>
-        <a href="#contact">Contact</a>
-      </nav>
+  <div class="ticker">
+    <div class="ticker-track">
+      <span>SYS <b>ONLINE</b></span>
+      <span>MODE <b>MAVERICK</b></span>
+      <span>UPTIME <b>31Y</b></span>
+      <span>TZ <b>UTC+08</b></span>
+      <span>STACK <b>PLANNING · PM · PUZZLE</b></span>
+      <span>STATUS <b>KEEP REBELLIOUS</b></span>
+      <span>LOC <b>TAIPEI.TW</b></span>
+      <span>BUILD <b>2026.04</b></span>
+      <span>SYS <b>ONLINE</b></span>
+      <span>MODE <b>MAVERICK</b></span>
+      <span>UPTIME <b>31Y</b></span>
+      <span>TZ <b>UTC+08</b></span>
+      <span>STACK <b>PLANNING · PM · PUZZLE</b></span>
+      <span>STATUS <b>KEEP REBELLIOUS</b></span>
+      <span>LOC <b>TAIPEI.TW</b></span>
+      <span>BUILD <b>2026.04</b></span>
     </div>
-  </header>
+  </div>
+</section>
 
-  <main>
-    <section id="hero" class="section hero-section" data-section>
-      <div class="hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow" data-reveal>Product Manager / Puzzle Solver / Rebellious Mindset</p>
-          <h1 data-reveal>王承皓</h1>
-          <p class="hero-text" data-reveal>
-            來自台灣的經理人，專注於增強自己在各種領域的技能。<br />
-            每天提醒自己「保持叛逆，特立獨行」。
-          </p>
-          <ul class="hero-tags" aria-label="個人標籤" data-reveal>
-            <li>Planning</li>
-            <li>Project Management</li>
-            <li>Puzzle Thinking</li>
-          </ul>
-          <div class="hero-actions" data-reveal>
-            <a class="button primary" href="#work">Explore Work</a>
-            <a class="button secondary" href="#contact">Contact Me</a>
+<div class="ascii-div">┌─────────────────── ◦ ◦ ◦ ───────────────────┐</div>
+
+<!-- INFO / WHO AM I -->
+<section class="sec" id="info">
+  <div class="sec-tag"><span class="bar"></span><b>02</b> · /who_am_i</div>
+  <h2 class="sec-title">&gt; whoami &nbsp;<span style="color:var(--dim)">--long</span></h2>
+  <p class="sec-sub">// 基本資料保留原始內容，重新整理成更清楚的資料層級。</p>
+
+  <div class="who">
+    <div class="who-card">
+      <h3>// identity.log</h3>
+      <p>來自台灣的經理人，專注於增強自己在各種領域的技能。</p>
+      <p class="en">&gt; Manager from Taiwan, focusing on enhancing his skills in various fields.</p>
+      <div style="height:14px"></div>
+      <p>他每天都會提醒自己「保持叛逆，特立獨行」。</p>
+      <p class="en">&gt; He reminds himself every day to &quot;Keep rebellious, be maverick.&quot;</p>
+    </div>
+
+    <div class="who-card">
+      <h3>// profile.json</h3>
+      <ul class="profile-list">
+        <li><span class="k">name_zh</span><span class="v">王承皓</span></li>
+        <li><span class="k">name_en</span><span class="v mono">Wang Chen Hao</span></li>
+        <li><span class="k">aka_zh</span><span class="v">阿寶</span></li>
+        <li><span class="k">aka_en</span><span class="v mono">ABAO</span></li>
+        <li><span class="k">birth</span><span class="v mono">1994.11.02</span></li>
+        <li><span class="k">gender</span><span class="v">男 / M</span></li>
+        <li><span class="k">hobby</span><span class="v">推理・解謎</span></li>
+        <li><span class="k">skill</span><span class="v">企劃・PM</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CAPABILITIES -->
+<section class="sec" id="cap">
+  <div class="sec-tag"><span class="bar"></span><b>03</b> · /capability</div>
+  <h2 class="sec-title">&gt; Problem systems,<br>&nbsp;&nbsp;not just tasks.</h2>
+  <p class="sec-sub">// 把原本的技能與興趣拆成可延伸的能力模組，之後也能加進更多作品或方法論。</p>
+
+  <div class="caps">
+    <div class="cap">
+      <div class="cap-n"><span>MOD_01</span><span class="st">active</span></div>
+      <h4>企劃</h4>
+      <div class="en">::planning</div>
+      <p>把目標、限制與使用者情境拆開，整理成可以前進的產品方向。</p>
+      <div class="cap-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+    </div>
+    <div class="cap">
+      <div class="cap-n"><span>MOD_02</span><span class="st">active</span></div>
+      <h4>專案管理</h4>
+      <div class="en">::project_management</div>
+      <p>用節奏、優先級與溝通機制，讓複雜任務保持推進。</p>
+      <div class="cap-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div>
+    </div>
+    <div class="cap">
+      <div class="cap-n"><span>MOD_03</span><span class="st">active</span></div>
+      <h4>推理與解謎</h4>
+      <div class="en">::deduction_puzzle</div>
+      <p>從細節觀察與邏輯推理出發，尋找問題背後真正的結構。</p>
+      <div class="cap-bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section class="sec" id="work">
+  <div class="sec-tag"><span class="bar"></span><b>04</b> · /work.log</div>
+  <h2 class="sec-title">&gt; Experience Showcase</h2>
+  <p class="sec-sub">// 將原本 timeline 改成展示式卡片，保留時間與說明文字，讓每段經歷更像作品案例。</p>
+
+  <div class="work">
+    <article class="wcard">
+      <div class="wcard-head">
+        <span class="date">RUN_NOW <b>// live</b></span>
+        <span class="status-pill live">running</span>
+      </div>
+      <div class="wcard-img">
+        <div class="label">[ image_slot :: <b>triple_i.png</b> ]</div>
+      </div>
+      <div class="wcard-body">
+        <h4>Triple-i</h4>
+        <p>將科技帶入保險產業，提供更好的溝通平台。將理財帶入生活，提供更簡單的計算工具。</p>
+        <div class="wcard-meta"><span>// insurtech</span><span>// fintech</span><span>// pm</span></div>
+      </div>
+    </article>
+
+    <article class="wcard">
+      <div class="wcard-head">
+        <span class="date">RUN <b>// 2018.11</b></span>
+        <span class="status-pill">shipped</span>
+      </div>
+      <div class="wcard-img">
+        <div class="label">[ image_slot :: <b>speed_drifters.png</b> ]</div>
+      </div>
+      <div class="wcard-body">
+        <h4>Speed Drifters</h4>
+        <p>2019 年度最佳遊戲。簡單上手、操作手感絕佳的賽車遊戲，開啟台灣賽車遊戲市場，至今依然活躍於排行榜。</p>
+        <div class="wcard-meta"><span>// mobile_game</span><span>// racing</span><span>// pm</span></div>
+      </div>
+    </article>
+
+    <article class="wcard">
+      <div class="wcard-head">
+        <span class="date">RUN <b>// 2018.02</b></span>
+        <span class="status-pill">shipped</span>
+      </div>
+      <div class="wcard-img">
+        <div class="label">[ image_slot :: <b>gash.png</b> ]</div>
+      </div>
+      <div class="wcard-body">
+        <h4>Gash</h4>
+        <p>台港首選數位娛樂服務平台，提供網路金流、線上遊戲資訊。</p>
+        <div class="wcard-meta"><span>// payment</span><span>// platform</span><span>// planning</span></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- NOTES -->
+<section class="sec" id="notes">
+  <div class="sec-tag"><span class="bar"></span><b>05</b> · /notes</div>
+  <h2 class="sec-title">&gt; Articles / Field Notes</h2>
+  <p class="sec-sub">// 保留現有文章入口，之後可以在這裡擴充更多產品、解謎與專案管理筆記。</p>
+
+  <div class="notes">
+    <a class="note" href="articles/puzzle-love.html">
+      <span class="date">2025 / 04</span>
+      <div>
+        <h4>為什麼我喜歡解謎</h4>
+        <p>從邏輯遊戲、解謎遊戲、密室逃脫，到產品經理與企劃設計所需的拆解能力。</p>
+      </div>
+      <span class="go">read_note</span>
+    </a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="sec" id="contact">
+  <div class="sec-tag"><span class="bar"></span><b>06</b> · /contact</div>
+  <h2 class="sec-title">&gt; Open a channel</h2>
+  <p class="sec-sub">// 如果你想聊產品、專案、合作，或只是想交流一個有趣的想法，都可以直接留言給我。</p>
+
+  <div class="contact">
+    <div class="contact-left">
+      <p>把想法丟進訊號裡，我會在收到後回覆。<br><span style="color:var(--dim)">&gt; transmission will be acknowledged within 72h.</span></p>
+
+      <ul class="contact-chan">
+        <li><span class="k">facebook</span><a class="v" href="https://www.facebook.com/wang.c.hao.9" target="_blank" rel="noreferrer"><i class="fa-brands fa-facebook-f"></i> wang.c.hao.9</a></li>
+        <li><span class="k">instagram</span><a class="v" href="https://www.instagram.com/aboao.w/" target="_blank" rel="noreferrer"><i class="fa-brands fa-instagram"></i> aboao.w</a></li>
+        <li><span class="k">line</span><a class="v" href="https://line.me/ti/p/5wklUV2_GE" target="_blank" rel="noreferrer"><i class="fa-brands fa-line"></i> add_friend</a></li>
+        <li><span class="k">uptime</span><span class="v" style="color:var(--amber)">mon – fri · 10:00–19:00 UTC+8</span></li>
+        <li><span class="k">signal</span><span class="v">● <span style="color:var(--green)">online</span></span></li>
+      </ul>
+
+      <div class="contact-ascii">
+<pre>
+&gt; awaiting inbound packet...
+&gt; channel secured · e2ee
+&gt; listening on :443
+  ▄▄▄   ▄▄▄   ▄▄▄
+  ███   ███   ███
+  ▀▀▀   ▀▀▀   ▀▀▀
+</pre>
+      </div>
+    </div>
+
+    <div class="form">
+      <div class="form-head">
+        <span>transmit.form <span style="color:var(--mute)">//</span> <b>encrypted</b></span>
+        <span>ESC<span style="color:var(--mute)">:</span> <span class="kbd">cancel</span></span>
+      </div>
+      <iframe
+        name="hidden_iframe"
+        id="hidden_iframe"
+        title="hidden form target"
+        class="hidden-frame"
+      ></iframe>
+      <form
+        action="https://script.google.com/macros/s/AKfycbxAT-oORea_UjGS7sYZOyjdmZ3dY-GFvJMaN1BERo0qdDHtXUNnXSiCn4cS6f_iBbIVRg/exec"
+        method="post"
+        target="hidden_iframe"
+        id="contact-form"
+        onsubmit="submitForm(this)"
+      >
+        <div class="form-body">
+          <div class="form-row">
+            <div class="field"><label>name</label><input type="text" name="name" placeholder="你的名字 / handle" required></div>
+            <div class="field"><label>phone</label><input type="text" name="phone" placeholder="+886 ________" required></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label>email</label><input type="email" name="email" placeholder="you@domain.tld" required></div>
+            <div class="field"><label>subject</label><input type="text" name="subject" placeholder="re: ____" required></div>
+          </div>
+          <div class="field"><label>message</label><textarea name="message" placeholder="> 開始輸入你的訊號..." required></textarea></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:4px">
+            <span style="color:var(--dim);font-size:11px">// PGP optional · SHA-256 checksum applied</span>
+            <button class="btn" type="submit">send_message</button>
           </div>
         </div>
+      </form>
+    </div>
+  </div>
+</section>
 
-        <div class="hero-visual tilt-card" data-reveal data-depth="0.08">
-          <div class="portrait-panel">
-            <div class="portrait-frame">
-              <img
-                src="images/王承皓.jpg"
-                alt="王承皓"
-                width="1108"
-                height="1477"
-                loading="eager"
-                fetchpriority="high"
-              />
-            </div>
-            <div class="signal-panel" aria-hidden="true">
-              <span class="signal-label">ABAO</span>
-              <strong>Keep rebellious,<br />be maverick.</strong>
-              <div class="signal-meter">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+<footer class="footer">
+  <div class="ascii-div" style="padding:10px 0 30px">└──── EOF ── <b style="color:var(--mute)">keep rebellious · be maverick</b> ── EOF ────┘</div>
+  <div class="foot-row">
+    <span>© 2026 <b>王承皓</b> · ABAO · wch.sys</span>
+    <span>designed &amp; compiled by <b>ABAO</b></span>
+    <span>build <b>v2026.04.a</b> · signed <b>0xA8A0</b></span>
+  </div>
+</footer>
 
-      <a class="scroll-indicator" href="#info" aria-label="往下滑查看關於我">
-        <span class="scroll-indicator-label">Scroll Down</span>
-        <span class="scroll-indicator-line" aria-hidden="true"></span>
-      </a>
-    </section>
+</div>
 
-    <section id="info" class="section" data-section>
-      <div class="section-shell">
-        <div class="section-heading" data-reveal>
-          <p class="eyebrow">Info</p>
-          <h2>Who am I</h2>
-          <p>基本資料保留原始內容，重新整理成更清楚的資料層級。</p>
-        </div>
+<script src="assets/js/index.js"></script>
 
-        <div class="info-layout">
-          <article class="statement-card glass-card" data-reveal>
-            <p>
-              來自台灣的經理人，專注於增強自己在各種領域的技能。<br />
-              Manager from Taiwan, focusing on enhancing his skills in various fields.
-            </p>
-            <p>
-              他每天都會提醒自己「保持叛逆，特立獨行」。<br />
-              He reminds himself every day to "Keep rebellious, be maverick".
-            </p>
-          </article>
-
-          <div class="profile-grid">
-            <article class="panel-card glass-card" data-reveal>
-              <h3>Basic Profile</h3>
-              <ul class="detail-list">
-                <li><span>姓名</span><strong>王承皓</strong></li>
-                <li><span>Name</span><strong>Wang Chen Hao</strong></li>
-                <li><span>綽號</span><strong>阿寶</strong></li>
-                <li><span>AKA</span><strong>ABAO</strong></li>
-              </ul>
-            </article>
-
-            <article class="panel-card glass-card" data-reveal>
-              <h3>Base Data</h3>
-              <ul class="detail-list">
-                <li><span>生日</span><strong>1994.11.02</strong></li>
-                <li><span>性別</span><strong>男</strong></li>
-                <li><span>興趣</span><strong>推理、解謎</strong></li>
-                <li><span>技能</span><strong>企劃、專案管理</strong></li>
-              </ul>
-            </article>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="capabilities" class="section capability-section" data-section>
-      <div class="section-shell">
-        <div class="section-heading" data-reveal>
-          <p class="eyebrow">Capabilities</p>
-          <h2>Problem systems, not just tasks.</h2>
-          <p>把原本的技能與興趣拆成可延伸的能力模組，之後也能加進更多作品或方法論。</p>
-        </div>
-
-        <div class="capability-grid">
-          <article class="capability-card glass-card" data-reveal>
-            <span>01</span>
-            <h3>企劃</h3>
-            <p>把目標、限制與使用者情境拆開，整理成可以前進的產品方向。</p>
-          </article>
-          <article class="capability-card glass-card" data-reveal>
-            <span>02</span>
-            <h3>專案管理</h3>
-            <p>用節奏、優先級與溝通機制，讓複雜任務保持推進。</p>
-          </article>
-          <article class="capability-card glass-card" data-reveal>
-            <span>03</span>
-            <h3>推理與解謎</h3>
-            <p>從細節觀察與邏輯推理出發，尋找問題背後真正的結構。</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="work" class="section work-section" data-section>
-      <div class="section-shell">
-        <div class="section-heading" data-reveal>
-          <p class="eyebrow">Work</p>
-          <h2>Experience Showcase</h2>
-          <p>將原本 timeline 改成展示式卡片，保留時間與說明文字，讓每段經歷更像作品案例。</p>
-        </div>
-
-        <div class="showcase-grid">
-          <article class="work-card glass-card tilt-card" data-reveal>
-            <p class="timeline-date">Now</p>
-            <div>
-              <h3>Triple-i</h3>
-              <p>將科技帶入保險產，提供更好的溝通平台。將理財帶入生活，提供更簡單的計算工具。</p>
-            </div>
-          </article>
-
-          <article class="work-card glass-card tilt-card" data-reveal>
-            <p class="timeline-date">2018 / 11</p>
-            <div>
-              <h3>Speed Drifters</h3>
-              <p>
-                2019 年度最佳遊戲。是一款簡單上手、操作手感絕佳的賽車遊戲，不但開啟了台灣的賽車遊戲市場，至今依然活耀於排行榜。
-              </p>
-            </div>
-          </article>
-
-          <article class="work-card glass-card tilt-card" data-reveal>
-            <p class="timeline-date">2018 / 02</p>
-            <div>
-              <h3>Gash</h3>
-              <p>台港首選數位娛樂服務平台，提供網路金流、線上遊戲資訊。</p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="notes" class="section notes-section" data-section>
-      <div class="section-shell">
-        <div class="section-heading" data-reveal>
-          <p class="eyebrow">Notes</p>
-          <h2>Articles / Field Notes</h2>
-          <p>保留現有文章入口，之後可以在這裡擴充更多產品、解謎與專案管理筆記。</p>
-        </div>
-
-        <article class="note-card glass-card tilt-card" data-reveal>
-          <div>
-            <p class="timeline-date">2025 / 04</p>
-            <h3>為什麼我喜歡解謎</h3>
-            <p>
-              從邏輯遊戲、解謎遊戲、密室逃脫，到產品經理與企劃設計所需的拆解能力。
-            </p>
-          </div>
-          <a class="button secondary" href="articles/puzzle-love.html">Read Note</a>
-        </article>
-      </div>
-    </section>
-
-    <section id="contact" class="section contact-section" data-section>
-      <div class="section-shell">
-        <div class="section-heading" data-reveal>
-          <p class="eyebrow">Contact</p>
-          <h2>Contact Me</h2>
-          <p>如果你想聊產品、專案、合作，或只是想交流一個有趣的想法，都可以直接留言給我。</p>
-        </div>
-
-        <div class="contact-layout">
-          <article class="contact-copy glass-card" data-reveal>
-            <h3>Let's talk</h3>
-            <p>把想法丟進訊號裡，我會在收到後回覆。</p>
-            <div class="social-links" aria-label="社群連結">
-              <a href="https://www.facebook.com/wang.c.hao.9" target="_blank" rel="noreferrer" aria-label="Facebook">
-                <i class="fa-brands fa-facebook-f"></i>
-              </a>
-              <a href="https://www.instagram.com/aboao.w/" target="_blank" rel="noreferrer" aria-label="Instagram">
-                <i class="fa-brands fa-instagram"></i>
-              </a>
-              <a href="https://line.me/ti/p/5wklUV2_GE" target="_blank" rel="noreferrer" aria-label="Line">
-                <i class="fa-brands fa-line"></i>
-              </a>
-            </div>
-          </article>
-
-          <div class="form-card glass-card" data-reveal>
-            <iframe
-              name="hidden_iframe"
-              id="hidden_iframe"
-              title="hidden form target"
-              class="hidden-frame"
-            ></iframe>
-            <form
-              action="https://script.google.com/macros/s/AKfycbxAT-oORea_UjGS7sYZOyjdmZ3dY-GFvJMaN1BERo0qdDHtXUNnXSiCn4cS6f_iBbIVRg/exec"
-              method="post"
-              target="hidden_iframe"
-              id="contact-form"
-            >
-              <div class="form-grid">
-                <label>
-                  <span>Name</span>
-                  <input type="text" name="name" placeholder="Name" required />
-                </label>
-                <label>
-                  <span>Phone</span>
-                  <input type="text" name="phone" placeholder="Phone" required />
-                </label>
-                <label>
-                  <span>Email</span>
-                  <input type="email" name="email" placeholder="Email" required />
-                </label>
-                <label>
-                  <span>Subject</span>
-                  <input type="text" name="subject" placeholder="Subject" required />
-                </label>
-                <label class="full">
-                  <span>Message</span>
-                  <textarea name="message" rows="3" placeholder="Message" required></textarea>
-                </label>
-              </div>
-              <button type="submit" class="button primary submit-button">Send Message</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <p>&copy; 2026 王承皓 | Design by ABAO</p>
-  </footer>
-
-  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
-  <script src="assets/js/main.js"></script>
-  <script src="assets/js/effects.js"></script>
 </body>
 </html>
