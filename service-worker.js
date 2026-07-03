@@ -1,19 +1,19 @@
-const CACHE_NAME = "aboao-site-v4";
+const CACHE_NAME = "aboao-site-v5";
 const OFFLINE_URL = "/offline.html";
 const PRECACHE_URLS = [
   "/",
   "/index.html",
   "/offline.html",
   "/manifest.json",
-  "/assets/css/index.css",
+  "/cyber-fx.css",
+  "/cyber-fx.js",
   "/assets/css/main.css",
-  "/assets/js/index.js",
   "/assets/js/pwa.js",
   "/articles/puzzle-love.html",
   "/images/A.ico",
   "/images/LOGO.svg",
+  "/images/abao.jpg",
   "/images/%E7%8E%8B%E6%89%BF%E7%9A%93.jpg",
-  "/assets/css/images/%E7%B6%B2%E9%A0%81%E5%BA%95%E5%9C%96.png",
 ];
 
 const shouldCache = (request, response) => {
